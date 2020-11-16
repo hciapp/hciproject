@@ -1,0 +1,573 @@
+<html>
+
+<head>
+  <title>Food search</title>
+  <!-- CSS -->
+  <!-- CSS -->
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <link type="text/css" rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="row navbar navbar-expand-md navbar-light bg-white sticky-top shadow-none">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="col-lg-5 col-md-2">
+        <a class="navbar-brand ml-4" style="font-family:Helvetica Neue;color:#00c851;font-size: 1.5rem;"
+          href="#">jomShare</a>
+
+      </div>
+      <div class="col-lg-5 col-md-7">
+
+      </div>
+      <div class="col-lg-2 col-md-3">
+        <div class="float-right mr-3 not-logged-in-wrapper">
+          <a class="btn btn-success mr-2" href="#">Donate</a>
+          <a class="btn btn-outline-white" onclick="showLoginRegisterForm()">Login</a>
+        </div>
+        <div class="float-right mr-3 logged-in-wrapper">
+          <div class="mr-4 logged-in-name"
+            style="font-family: 'Montserrat';font-size: 1rem;color: gray !important;margin: .375rem;text-align: center;">
+            Hi, Needy</div>
+          <a class="btn btn-outline-dark" onclick="loggout()">Logout</a>
+        </div>
+      </div>
+
+      <!-- Sidebar elements moved to navbar when collapsed -->
+      <ul class="nav mt-3 flex-column d-md-none d-lg-none">
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./storage.html">
+            <i class="mdi mdi-home menu-icon"></i>
+            <span class="menu-title">Storage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light bg-secondary" href="./food-log.html">
+            <i class="mdi mdi-currency-usd menu-icon"></i>
+            <span class="menu-title">Food Log</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./dist-schedule.html">
+            <i class="mdi mdi-bell-plus menu-icon"></i>
+            <span class="menu-title">Event Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./mco-check.html">
+            <i class="mdi mdi-settings menu-icon"></i>
+            <span class="menu-title">Event Request</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <div class="row h-100">
+    <!-- Sidenav -->
+    <div class="col-md-2 col-lg-2 d-none d-md-block d-lg-block position-fixed h-100 bg-white" id="sidebar">
+      <ul class="nav mt-3 flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./storage.html">
+            <i class="mdi mdi-home menu-icon"></i>
+            <span class="menu-title">Storage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light bg-secondary" href="./food-log.html">
+            <i class="mdi mdi-currency-usd menu-icon"></i>
+            <span class="menu-title">Food Log</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./dist-schedule.html">
+            <i class="mdi mdi-bell-plus menu-icon"></i>
+            <span class="menu-title">Event Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./mco-check.html">
+            <i class="mdi mdi-settings menu-icon"></i>
+            <span class="menu-title">Event Request</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main content -->
+    <div class="col-md-10 col-lg-10 offset-md-2">
+      <h3 class="card-title py-2">
+        Food Inventory Log
+        <button type="button" class="btn btn-primary" onclick="showFoodForm()">Add Food</button>
+      </h3>
+      <div class="row container">
+        <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+          <table class="table table-bordered table-striped mb-0">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 12%;">ID</th>
+                <th scope="col" style="width: 12%;">Type</th>
+                <th scope="col" style="width: 23%;">Brand</th>
+                <th scope="col" style="width: 15%;">Storage room</th>
+                <th scope="col" style="width: 7%;">KG</th>
+                <th scope="col" style="width: 21%;">Expiry Date</th>
+                <th scope="col" style="width: 10%;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="stockList-table-body">
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- End of table -->
+    </div>
+    <!-- end of main content -->
+
+  </div>
+
+  <!-- Start of modal -->
+  <div class="modal fade" id="foodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border: 0;">
+                <h5 class="modal-title" id="modalLabel">Add Food</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label>Food Inventory Id</label>
+                            <span class="form-control" id="modal-inventory-id"></span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Type</label>
+                            <input type="text" class="form-control" id="modal-type" placeholder="Enter Type">
+                            <span class="error-label"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                              <label>Brand</label>
+                              <input type="text" class="form-control" id="modal-brand" placeholder="Enter Brand">
+                              <span class="error-label"></span>
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4">Storage Room</label>
+                            <input type="text" class="form-control" id="modal-storage-room" placeholder="Enter Storage Room">
+                            <span class="error-label"></span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Number of Stock</label>
+                            <input type="number" class="form-control" id="modal-stock" placeholder="Enter number-of-stock">
+                            <span class="error-label"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4">Expiry Date</label>
+                            <input type="text" class="form-control" id="modal-expiry-date" placeholder="Enter Expiry Date" readonly>
+                            <span class="error-label"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border: 0;">
+                <button type="button" class="btn btn-success" style="width: 150px;" onclick="addFoodToFirebase()">Submit</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- End of modal -->
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+  <!-- date picker-->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+  
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+
+  <!-- Toast plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.js"></script>
+
+  <script type="text/javascript" src="firebase.js"></script>
+  <script type="text/javascript" src="loginHandler.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+
+  <script>
+      //global variable that store list of stock fetch from firebase
+      var stockList = [];
+
+      function validateForm(){
+        var type = $("#modal-type");
+        var brand = $("#modal-brand");
+        var storageRoom = $("#modal-storage-room");
+        var stock = $("#modal-stock");
+        var $allInputForEmptyCheck = [type,brand,storageRoom,stock];
+        var expiryDate = $("#modal-expiry-date").datepicker('getDate');
+        
+        var isValid = true;
+
+        //clear all error first
+        $(".error-label").html("");
+
+        //validate no empty input allowed
+        $allInputForEmptyCheck.forEach(($input) => {
+          if ($input.val().length <= 0) {
+            var errorLabel = $input.closest('.form-group').children(".error-label");
+            var columnName = $input.closest('.form-group').children("label").html();
+
+            if (errorLabel.html().length > 0) {
+              errorLabel.html(errorLabel.html() + "<br>")
+            }
+
+            errorLabel.html(errorLabel.html() + columnName + " Cannot be empty.");
+            isValid = false;
+          }
+        });
+
+        //validate date
+        if(expiryDate === null){
+          var errorLabel = $("#modal-expiry-date").closest('.form-group').children(".error-label");
+          var columnName = $("#modal-expiry-date").closest('.form-group').children("label").html();
+
+          if (errorLabel.html().length > 0) {
+            errorLabel.html(errorLabel.html() + "<br>")
+          }
+
+          errorLabel.html(errorLabel.html() + columnName + " Cannot be empty.");
+
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+
+      function showFoodForm(objId) {
+          if(objId !== undefined){
+            var myStockObj = null;
+            stockList.map(stock => { if(stock.id === objId){myStockObj = stock}});
+
+            $('#modalLabel').html("Edit Food");
+            $('#modal-inventory-id').html(myStockObj.id);
+            $('#modal-type').val(myStockObj.type);
+            $('#modal-brand').val(myStockObj.brand);
+            $('#modal-storage-room').val(myStockObj.storageRoom);
+            $('#modal-stock').val(myStockObj.numOfStock);
+            $('#modal-expiry-date').datepicker('setDate',myStockObj.expiryDate.toDate());
+
+
+          }else{
+            $('#modalLabel').html("Add Food");
+            $('#modal-inventory-id').html("Auto-Generate");
+            $('#modal-type').val("");
+            $('#modal-brand').val("");
+            $('#modal-storage-room').val("");
+            $('#modal-stock').val("");
+            $('#modal-expiry-date').datepicker('clearDates');
+          }
+
+          $('#foodModal').modal('show');
+
+
+      }
+
+      function removeStock(objId){
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+          },
+          buttonsStyling: false
+        })
+
+        db.collection("stocks").doc(objId).delete().then(function() {
+          //refresh the list
+          fetchFoodStockFromFirestore();
+
+
+          swalWithBootstrapButtons.fire(
+            'Removed Successfully!',
+            'The Stock is removed from the system',
+            'success'
+          ).then(() => {
+          })
+        }).catch(function(error) {
+          toastr.error(error, 'Some error occured', {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          })
+        });
+
+
+      }
+
+      function fetchFoodStockFromFirestore() {
+          db.collection("stocks")
+              .onSnapshot(function (querySnapshot) {
+                  $("#stockList-table-body").empty();
+
+                  if(querySnapshot.size <= 0) {
+                      $("#stockList-table-body").append(`<td class="text-center" colspan="7">No Stock yet. Please check again later</td>`)
+                  }
+
+                  querySnapshot.forEach(function (document) {
+                      const doc = document.data();
+
+                      const myJsonObj = {
+                          id: document.id,
+                          ...doc
+                      };
+
+                      stockList.push(myJsonObj);
+
+
+                      
+                  });
+
+                  stockList.sort((a,b)=>{
+                    var orderBool = a.type > b.type;
+                    return orderBool ? 1 : -1;
+                  });
+
+                  stockList.forEach(stock=>{
+                    $("#stockList-table-body").append(`
+                          <tr>
+                            <th scope="row">${stock.id}</th>
+                            <td >${stock.type}</td>
+                            <td >${stock.brand}</td>
+                            <td >${stock.storageRoom}</td>
+                            <td >${stock.numOfStock}</td>
+                            <td >${stock.expiryDate.toDate().getFullYear()}-${stock.expiryDate.toDate().getMonth()+1}-${stock.expiryDate.toDate().getDate()}</td>
+                            <td>
+                              <button type="button" class="btn btn-warning btn-sm m-0" onclick="showFoodForm('${stock.id}')">Edit</button>
+                              <button type="button" class="btn btn-danger btn-sm m-0 mt-1" onclick="removeStock('${stock.id}')">Remove</button>
+                            </td>
+                          </tr>    `
+                      )
+                  })
+
+                  
+                  //add list for suggestion for type
+                  var typeSuggestionList = [];
+                  stockList.forEach(stock=>{if(!typeSuggestionList.includes(stock.type)){typeSuggestionList.push(stock.type)}});                  
+                  
+                  $("#modal-type").autocomplete({
+                    source: typeSuggestionList,
+                    appendTo : "#foodModal"
+                  });
+
+                  //add list for suggestion for brand
+                  var brandSuggestionList = [];
+                  stockList.forEach(stock=>{if(!brandSuggestionList.includes(stock.brand)){brandSuggestionList.push(stock.brand)}});                  
+                  
+                  $("#modal-brand").autocomplete({
+                    source: brandSuggestionList,
+                    appendTo : "#foodModal"
+                  });
+
+                  //add list for suggestion for storage
+                  var storageRoomSuggestionList = [];
+                  stockList.forEach(stock=>{if(!storageRoomSuggestionList.includes(stock.storageRoom)){storageRoomSuggestionList.push(stock.storageRoom)}});                  
+                  
+                  $("#modal-storage-room").autocomplete({
+                    source: storageRoomSuggestionList,
+                    appendTo : "#foodModal"
+                  });
+
+
+              });
+      }
+
+      function addFoodToFirebase(){
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+          },
+          buttonsStyling: false
+        })
+
+        if(validateForm()){
+          //retrieve all value
+          var id = $("#modal-inventory-id").html();
+          var type = $("#modal-type").val();
+          var brand = $("#modal-brand").val();
+          var storageRoom = $("#modal-storage-room").val();
+          var stock = $("#modal-stock").val();
+          var $allInputForEmptyCheck = [type,brand,storageRoom,stock];
+          var expiryDate = $("#modal-expiry-date").datepicker('getDate');
+          
+          var stockData = {
+            type: type,
+            brand: brand,
+            storageRoom: storageRoom,
+            numOfStock: parseInt(stock),
+            expiryDate: firebase.firestore.Timestamp.fromDate(expiryDate)
+          }
+
+          //if it is add new food
+          if(id === "Auto-Generate"){
+
+            // Add a new document with a generated id.
+            db.collection("stocks").add(stockData)
+              .then(function (docRef) {
+                //refresh the list
+                fetchFoodStockFromFirestore();
+
+                swalWithBootstrapButtons.fire(
+                  'Added Successfully!',
+                  'Your Stock is now added into the system',
+                  'success'
+                ).then(() => {
+                  $('#foodModal').modal('hide');
+                })
+              })
+              .catch(function (error) {
+                toastr.error(error, 'Some error occured', {
+                  "closeButton": false,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                })
+              });   
+          }else{
+            // Add a new document with a generated id.
+            db.collection("stocks").doc(id).set(stockData)
+              .then(function (docRef) {
+                //refresh the list
+                fetchFoodStockFromFirestore();
+
+                swalWithBootstrapButtons.fire(
+                  'Updated Successfully!',
+                  'Your Stock is now updated into the system',
+                  'success'
+                ).then(() => {
+                  $('#foodModal').modal('hide');
+                })
+              })
+              .catch(function (error) {
+                toastr.error(error, 'Some error occured', {
+                  "closeButton": false,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                })
+              });   
+          }
+
+        }else{
+          //Contain error
+          toastr.error('Please correct the form based on the error message.', 'The Form Contain Error', {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          })
+        }
+
+      }
+
+      $(document).ready(function () {
+        //initialize date picker
+        $("#modal-expiry-date").datepicker();
+
+        fetchFoodStockFromFirestore();
+
+        
+      });
+
+
+  </script>
+</body>
+
+</html>

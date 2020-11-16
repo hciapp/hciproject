@@ -1,0 +1,207 @@
+<html>
+    <head>
+        <title>Food search</title>
+        <!-- CSS -->
+       <!-- CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+          <nav class="row navbar navbar-expand-md navbar-light bg-white sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <div class="col-lg-3 col-md-2">
+                <a class="navbar-brand text-success ml-4" style="font-family:Helvetica Neue" href="#">jomShare</a>
+              </div>
+              <div class="col-lg-7 col-md-7">
+                <form class="form-inline my-2 mr-auto">
+                    <input class="form-control col-9 col-lg-8" type="search" placeholder="Search for your food..." aria-label="Search">
+                    <button class="input-group-btn btn btn-outline-success ml-2 my-sm-2" type="submit">Search</button>
+                </form>
+              </div>
+              <div class="col-lg-2 col-md-3">
+                    <div class="float-right mr-3">
+                      <a class="btn btn-success mr-2" href="#">Donate</a>
+                      <a class="btn btn-outline-secondary" href="#">Login</a>
+                    </div>
+            </div>
+
+            <!-- Sidebar elements moved to navbar when collapsed -->
+            <ul class="nav d-md-none d-lg-none">
+            <li><h5 class="pt-5 pl-4 pb-3">Filter</h5>
+              <div class="row">
+                  <div class="filter-list" id="filter-list">
+                  <a class="btn btn-sm btn-secondary text-white col-4 offset-2" data-value=0>Halal</a>
+                  <a class="btn btn-sm btn-secondary text-white  col-5" data-value=0>Non-Halal</a>
+                  <a class="btn btn-sm btn-secondary text-white  col-4 offset-2" data-value=0>Fruit</a>
+                  <a class="btn btn-sm btn-secondary text-white  col-5" data-value=0>Vegetable</a>
+                  <a class="btn btn-sm btn-secondary text-white  col-4 offset-2" data-value=0>Meat</a>
+                  <a class="btn btn-sm btn-secondary text-white  col-5" data-value=0>Beans</a>
+                  <a class="btn btn-sm btn-secondary text-white  col-4 offset-2" data-value=0>Drink</a>
+                  <a class="btn btn-sm btn-secondary text-white  col-5" data-value=0>Alcohol</a>
+                  </div>
+              </div></li>
+            <li> <h5 class="pt-5 pl-4 pb-1">Location Filter</h5>
+              <div class="input-group-btn pl-4">     
+                <Button type="button" class="btn btn-outline-secondary col-lg-12"><span class="fa  fa-map-marker pr-2"></span>Pick a location</button>
+              </div></li>
+            <li><h5 class="pt-5 pl-4 pb-1">Range</h5>
+              <div class="input-group pl-4">       
+                <input type="text" class="form-control" placeholder="How far?">
+                <span class="p-2 input-group-text bg-white text-dark" style="font-size: 15px;">KM</span>
+              </div> </li>>
+            </ul>
+
+            </div>
+        </nav>
+
+        <div class="row h-100">
+        <!-- Sidenav -->
+        <div class="col-md-2 col-lg-2 d-none d-md-block d-lg-block position-fixed h-100 bg-white" id="sidebar">
+            <h5 class="pt-5 pl-4 pb-3">Filter</h5>
+            <div class="row">
+                <div class="filter-list" id="filter-list">
+                <a class="btn btn-sm btn-secondary text-white col-4 offset-2" data-value=0>Halal</a>
+                <a class="btn btn-sm btn-secondary text-white  col-5" data-value=0>Non-Halal</a>
+                <a class="btn btn-sm btn-secondary text-white  col-4 offset-2" data-value=0>Fruit</a>
+                <a class="btn btn-sm btn-secondary text-white  col-5" data-value=0>Vegetable</a>
+                <a class="btn btn-sm btn-secondary text-white  col-4 offset-2" data-value=0>Meat</a>
+                <a class="btn btn-sm btn-secondary text-white  col-5" data-value=0>Beans</a>
+                <a class="btn btn-sm btn-secondary text-white  col-4 offset-2" data-value=0>Drink</a>
+                <a class="btn btn-sm btn-secondary text-white  col-5" data-value=0>Alcohol</a>
+                </div>
+            </div>
+
+            <h5 class="pt-5 pl-4 pb-1">Location Filter</h5>
+            <div class="input-group-btn pl-4">     
+              <Button type="button" class="btn btn-outline-secondary col-lg-12"><span class="fa  fa-map-marker pr-2"></span>Pick a location</button>
+            </div>
+
+            <h5 class="pt-5 pl-4 pb-1">Range</h5>
+            <div class="input-group pl-4">       
+              <input type="text" class="form-control" placeholder="How far?">
+              <span class="p-2 input-group-text bg-white text-dark" style="font-size: 15px;">KM</span>
+            </div> 
+        </div>
+        
+        <!-- Main content -->
+        <div class="col-md-10 col-lg-10 offset-md-2">
+            <div class="pt-3 pl-3 pr-3">
+            <div class="row">
+                <!-- Start of card -->
+                <div class="col-lg-3 pb-3 ">
+                <div class="card py-2 px-1" >
+                    <div class="pt-3 pl-4 d-inline">
+                    <span class="fa fa-user-circle-o pr-3" style="font-size: 20px;"></span><a class="align-items-center" style="font-size: 17px;">Some dude</a>
+                    </div>
+                    <img class="card-img-top" src="resources/apple.jpg" alt="Card image cap" height="200px">
+                    <div class="card-body">
+                    <div class="d-inline item-tags">
+                        <span class="btn btn-sm btn-secondary">Halal</span>
+                        <span class="btn btn-sm btn-secondary">Fruit</span>
+                        <span class="btn btn-sm btn-secondary">Vegetable</span>
+                    </div>
+                    <div class="d-flex justify-content-between item-title">
+                      <p class="card-title">Apple</p>
+                      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#itemModal">
+                        GET
+                      </button>
+                      </div>
+                      <ul class="item-desc">
+                            <li><span class="fa fa-fw fa-bar-chart"></span><a>Quantity: 2</a></li>
+                            <li><span class="fa fa-fw fa-map-marker"></span><a>Location: Corona Land</a></li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+                  <!-- End of card -->
+                  
+            </div>
+
+            <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header" style="border: 0;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <img class="card-img-top" src="resources/apple.jpg" alt="Card image cap">
+                      </div>
+                      <div class="col-lg-7">
+                        <div class="pr-3">
+                          <div class="d-flex justify-content-between">
+                            <a class="align-items-center" style="font-size: 17px;"><span class="fa fa-user-circle-o pr-3" style="font-size: 20px;"></span>Some dude</a>
+                            <a class="btn btn-primary" href="#" style="width:100px">Chat</a>
+                            </div>
+                            <h3 class="py-2">Apple</h3>
+                            <span class="fa fa-fw fa-bar-chart pb-3"></span><a>Quantity: 2</a>
+                            <p class="overflow-auto">I had this extra apple I got from some witch. Some lady name Snow White didn't want it so she gave it to me</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row bottom-container">
+                      <div class="col-lg-5">
+                        <h4 class="py-2 pl-2">Pick up location</h4>
+                        <div id="map-container-google-1" class="z-depth-1-half map-container" >
+                          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3984.1032223841053!2d101.6013517!3d3.0670776!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc4c8f5912644b%3A0x77612fa0225cad69!2sSunway%20University!5e0!3m2!1sen!2smy!4v1603680994430!5m2!1sen!2smy"
+                           frameborder="0"
+                            style="border:0" allowfullscreen></iframe>
+                        </div>
+                      </div>
+                      <div class="col-lg-7 d-flex flex-column">
+                        <div class="mt-auto">
+                        <div class="border border-success text-center text-success col-lg-6 mt-2" style="border-radius: 10px; margin-bottom:50px">
+                          <p>Want to convey your appreciation?</p>
+                          <div class="input-group pb-3 ">
+                            <span class="p-2 input-group-text bg-success text-white" style="font-size: 15px;">RM</span>
+                            <input type="text" class="form-control" placeholder="Place your tips amount">
+                          </div>
+                        </div>
+                        <a class="btn btn-success text-center text-white col-lg-12 mt-auto" style="border-radius: 10px;">I will accept the food!</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+        <script>
+          $(document).ready(function() { 
+            $("#filter-list a").click(function(){
+              if($(this).data("value") == 1){
+                $(this).data("value", 0)
+                $(this).removeClass("btn-success")
+                $(this).addClass("btn-secondary")
+              }else{
+                $(this).data("value", 1)
+                $(this).removeClass("btn-secondary")
+                $(this).addClass("btn-success")
+              }
+           });
+    
+          });
+          </script>
+    </body>
+</html>

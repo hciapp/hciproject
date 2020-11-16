@@ -1,0 +1,781 @@
+<html>
+
+<head>
+  <title>Food search</title>
+  <!-- CSS -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css">
+
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link id="bsdp-css" href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css"
+    rel="stylesheet">
+
+  <link rel='stylesheet' type='text/css'
+    href='https://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css'>
+  <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="row navbar navbar-expand-md navbar-light bg-white sticky-top shadow-none">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="col-md-2">
+        <a class="navbar-brand ml-4" style="font-family:Helvetica Neue;color:#00c851;font-size: 1.5rem;"
+          href="#">jomShare</a>
+
+      </div>
+      <div class="col-md-6">
+
+      </div>
+      <div class="col-md-4">
+        <div class="float-right mr-3 not-logged-in-wrapper">
+          <a class="btn btn-success mr-2" href="#">Donate</a>
+          <a class="btn btn-outline-white" onclick="showLoginRegisterForm()">Login</a>
+        </div>
+        <div class="float-right mr-3 logged-in-wrapper">
+          <div class="mr-4 logged-in-name"
+            style="font-family: 'Montserrat';font-size: 1rem;color: gray !important;margin: .375rem;text-align: center;">
+            Hi, Needy</div>
+          <a class="btn btn-outline-dark" onclick="loggout()">Logout</a>
+        </div>
+      </div>
+
+      <!-- Sidebar elements moved to navbar when collapsed -->
+      <ul class="nav mt-3 flex-column d-md-none d-lg-none">
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./storage.html">
+            <i class="mdi mdi-home menu-icon"></i>
+            <span class="menu-title">Storage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./food-log.html">
+            <i class="mdi mdi-currency-usd menu-icon"></i>
+            <span class="menu-title">Food Log</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./dist-schedule.html">
+            <i class="mdi mdi-bell-plus menu-icon"></i>
+            <span class="menu-title">Event Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light bg-secondary" href="./mco-check.html">
+            <i class="mdi mdi-settings menu-icon"></i>
+            <span class="menu-title">Event Request</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <div class="row h-100">
+    <!-- Sidenav -->
+    <div class="col-md-2 col-lg-2 d-none d-md-block d-lg-block position-fixed h-100 bg-white" id="sidebar">
+      <ul class="nav mt-3 flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./storage.html">
+            <i class="mdi mdi-home menu-icon"></i>
+            <span class="menu-title">Storage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./food-log.html">
+            <i class="mdi mdi-currency-usd menu-icon"></i>
+            <span class="menu-title">Food Log</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./dist-schedule.html">
+            <i class="mdi mdi-bell-plus menu-icon"></i>
+            <span class="menu-title">Event Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light bg-secondary" href="./mco-check.html">
+            <i class="mdi mdi-settings menu-icon"></i>
+            <span class="menu-title">Event Request</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main content -->
+    <div class="col-md-10 col-lg-10 offset-md-2">
+      <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#request" role="tab" aria-controls="home"
+            aria-selected="true">Requests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#new-request" role="tab" aria-controls="profile"
+            aria-selected="false">Create New Request</a>
+        </li>
+      </ul>
+
+
+
+      <div class="tab-content">
+        <div id="request" class="container tab-pane active"><br>
+
+          <!-- Table -->
+          <h3 class="card-title py-2 mt-4">Pending</h3>
+          <div class="row container pb-4">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+              <table class="table table-bordered table-striped mb-0">
+                <thead>
+                  <tr class="text-muted">
+                    <th scope="col" style="width: 10%;">Event type</th>
+                    <th scope="col" style="width: 20%;">Event Start Date & Time</th>
+                    <th scope="col" style="width: 20%;">Event End Date & Time</th>
+                    <th scope="col" style="width: 15%;">Location</th>
+                    <th scope="col" style="width: 10%;">Number of Personnel (Organizer)</th>
+                    <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
+                    <th scope="col" style="width: 15%;">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="pending-table-body">
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- End of table -->
+
+          <!-- Table -->
+          <h3 class="card-title py-2">Accepted</h3>
+          <div class="row container pb-4">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+              <table class="table table-bordered table-striped mb-0">
+                <thead>
+                  <tr class="text-muted">
+                    <th scope="col" style="width: 10%;">Event type</th>
+                    <th scope="col" style="width: 20%;">Event Start Date & Time</th>
+                    <th scope="col" style="width: 20%;">Event End Date & Time</th>
+                    <th scope="col" style="width: 15%;">Location</th>
+                    <th scope="col" style="width: 10%;">Number of Personnel (Organizer)</th>
+                    <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
+                    <th scope="col" style="width: 15%;">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="accepted-table-body">
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- End of table -->
+
+          <!-- Table -->
+          <h3 class="card-title py-2 mt-4">Rejected</h3>
+          <div class="row container pb-4">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+              <table class="table table-bordered table-striped mb-0">
+                <thead>
+                  <tr class="text-muted">
+                    <th scope="col" style="width: 10%;">Event type</th>
+                    <th scope="col" style="width: 20%;">Event Start Date & Time</th>
+                    <th scope="col" style="width: 15%;">Location</th>
+                    <th scope="col" style="width: 10%;">Number of Personnel (Organizer)</th>
+                    <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
+                    <th scope="col" style="width: 15%;">Status</th>
+                    <th scope="col" style="width: 20%;">Reason for Rejection</th>
+                  </tr>
+                </thead>
+                <tbody id="rejected-table-body">
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- End of table -->
+
+
+
+        </div>
+        <!-- End of first tab -->
+        <div id="new-request" class="container tab-pane fade"><br>
+          <form>
+            <h3 class="card-title py-2">Event Info</h3>
+            <div class="form-group">
+              <label for="input-distribution-type">Event Type</label>
+              <select class="form-control" id="input-distribution-type">
+                <option value="centralised-distribution">Centralised Distribution</option>
+                <option value="doorstep-distribution">Doorstep Distribution</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="input-distribution-date">Event Start Date & Time</label>
+              <div class="input-group ">
+                <input type="text" id="input-distribution-start-datetime"
+                  class="datepicker form-control date-input date form_datetime" value="" readonly=true>
+                <div class="input-group-addon m-2">
+                  <i class="fas fa-calendar"></i>
+                </div>
+              </div>
+              <span class="error-label"></span>
+            </div>
+            <div class="form-group">
+              <label for="input-distribution-date">Event  End Date & Time</label>
+              <div class="input-group ">
+                <input type="text" id="input-distribution-end-datetime"
+                  class="datepicker form-control date-input date form_datetime" readonly=true>
+                <div class="input-group-addon m-2">
+                  <i class="fas fa-calendar"></i>
+                </div>
+              </div>
+              <span class="error-label"></span>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="input-num-personnel">Number of Personnel</label>
+                <div class="input-group">
+                  <input class="form-control" id="input-num-personnel" type="number" min="1"></input>
+                  <div class="input-group-append">
+                    <span class="input-group-text">People</span>
+                  </div>
+                </div>
+                <span class="error-label"></span>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="input-num-needy">Maximum Number of Participants</label>
+                <div class="input-group">
+                  <input class="form-control" id="input-num-needy" type="number" min="1"></input>
+                  <div class="input-group-append">
+                    <span class="input-group-text">People</span>
+                  </div>
+                </div>
+                <span class="error-label"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="input-distribution-items">Event items</label>
+                <select class="form-control" id="input-distribution-items">
+                  <option value="food">Food (Cooked Food)</option>
+                  <option value="daily-necessities">Daily Necessities (Canned Food/Household Goods)</option>
+                </select>
+                <span class="error-label"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="input-remark">Remarks</label>
+                <textarea class="form-control" id="input-remark" rows="3"></textarea>
+                <span class="error-label"></span>
+              </div>
+            </div>
+          </form>
+          <div class="centralised-distribute-additional-input">
+            <h4 class="card-title py-2">Centralised Distribution Additional Info</h4>
+            <div class="form-group position-relative">
+              <label for="input-location-search">Exact Distribution Location</label>
+              <div class="input-group has-search">
+                <input type="search" class="form-control" id="input-location-search"
+                  placeholder="Search Location Here(ex: Jalan sunway..)">
+                <span class="fa fa-search form-control-feedback"></span>
+              </div>
+              <span class="error-label"></span>
+              <div id="location-result-box">
+              </div>
+
+            </div>
+            <div id="map-location-wrapper"></div>
+          </div>
+
+          <div class="doorstep-distribute-additional-input">
+            <h4 class="card-title py-2">Doorstep Distribution Additional Info</h4>
+            <div class="form-group">
+              <label for="input-doorstep-distribution-area">Doorstep Distribution Area</label>
+              <input class="form-control" type="text" id="input-doorstep-distribution-area" />
+              <span class="error-label"></span>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary w-100 mt-4" onclick="createMcoRequest()">Submit an Event
+            Request</button>
+
+
+        </div> <!-- End of second tab  -->
+      </div><!-- End of tabs -->
+    </div>
+    <!-- end of main content -->
+  </div>
+
+
+
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+    integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+    crossorigin="anonymous"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+  <script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+
+  <script
+    src="https://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js?t=20130302"></script>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.js"></script>
+  <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps-web.min.js"></script>
+  <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/services/services-web.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+  <script type="text/javascript" src="firebase.js"></script>
+  <script type="text/javascript" src="loginHandler.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+
+
+  <script>
+    const apiKey = 'pDnGSI4YJIaGwPmkmQNZjLIG02H6rxB2';
+    var marker = new tt.Marker({ color: "red" });
+
+    //TomTom map initialization
+    var map = tt.map({
+      key: apiKey,
+      container: 'map-location-wrapper',
+      center: [101.5923, 3.15],
+      style: 'tomtom://vector/1/basic-main',
+      zoom: 12
+    });
+    function selectLocation(element) {
+      $("#location-result-box").empty();
+      var inputLocationSearch = document.getElementById("input-location-search");
+      inputLocationSearch.setAttribute("lat-selected", element.getAttribute("lat"));
+      inputLocationSearch.setAttribute("long-selected", element.getAttribute("long"));
+
+      inputLocationSearch.value = element.innerHTML;
+      map.flyTo({ center: new tt.LngLat(element.getAttribute("long"), element.getAttribute("lat")) })
+      marker = new tt.Marker({ color: "red" }).setLngLat([element.getAttribute("long"), element.getAttribute("lat")]).addTo(map);
+    }
+
+    function clearLocation() {
+      $("#location-result-box").empty();
+      var inputLocationSearch = document.getElementById("input-location-search");
+      inputLocationSearch.removeAttribute("lat-selected");
+      inputLocationSearch.removeAttribute("long-selected");
+      marker.remove();
+
+    }
+
+    function resetRequestForm() {
+      $("#input-distribution-type").val("centralised-distribution");
+      $("#input-distribution-start-datetime").val("");
+      $("#input-distribution-end-datetime").val("");
+      $("#input-distribution-items").val("food");
+      $("#input-doorstep-distribution-area").val("");
+      $("#input-num-personnel").val("");
+      $("#input-num-needy").val("");
+      $("#input-distributionitems").val("");
+      $("#input-remark").val("");
+      $("#input-location-search").val("")
+
+      $(".centralised-distribute-additional-input").css("display", "block");
+      $(".doorstep-distribute-additional-input").css("display", "none");
+
+
+      clearLocation()
+    }
+
+    function createMcoRequest() {
+      if (validateInfo()) {
+        //validate Success 
+        //ASk for confirmation
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+          },
+          buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+          title: 'Are you sure you want to submit this request?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, submit it!',
+          cancelButtonText: 'No, cancel!',
+          reverseButtons: true
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            var distributeType = $("#input-distribution-type").val();
+            var distributeStartDateTime = moment($("#input-distribution-start-datetime").val(), 'DD-MM-YYYY hh:mm');
+            var distributeEndDateTime = moment($("#input-distribution-end-datetime").val(), 'DD-MM-YYYY hh:mm');
+            var numPersonnel = $("#input-num-personnel").val();
+            var numNeedy = $("#input-num-needy").val();
+            var distributionItems = $("#input-distribution-items").val();
+            var remark = $("#input-remark").val();
+            var $location = $("#input-location-search");
+            var doorstepDistributionArea = $("#input-doorstep-distribution-area").val();
+
+            var mco_request_object = {
+              distributionType: distributeType,
+              distributionStartDateTime: firebase.firestore.Timestamp.fromDate(distributeStartDateTime.toDate()),
+              distributionEndDateTime: firebase.firestore.Timestamp.fromDate(distributeEndDateTime.toDate()),
+              numOfPersonnel: parseInt(numPersonnel),
+              numOfNeedy: parseInt(numNeedy),
+              distributionItems: distributionItems,
+              remark: remark,
+              last_updated: firebase.firestore.FieldValue.serverTimestamp(),
+              status: "pending"
+            }
+            if (distributeType == "centralised-distribution") {
+              mco_request_object = {
+                ...mco_request_object,
+                locationName: $location.val(),
+                locationCoor: new firebase.firestore.GeoPoint(parseFloat($location.attr("lat-selected")), parseFloat($location.attr("long-selected"))),
+              }
+            } else {
+              mco_request_object = {
+                ...mco_request_object,
+                doorstepDistributionArea: doorstepDistributionArea
+              }
+            }
+
+            // Add a new document with a generated id.
+            db.collection("mco_requests").add(
+              mco_request_object
+            )
+              .then(function (docRef) {
+                swalWithBootstrapButtons.fire(
+                  'Submitted!',
+                  'Your Mco request is now pending for approval!',
+                  'success'
+                ).then(() => {
+                  $("#home-tab").tab('show')
+                })
+              })
+              .catch(function (error) {
+                toastr.error(error, 'Some error occured', {
+                  "closeButton": false,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                })
+              });
+
+
+          }
+        })
+      } else {
+        //Contain error
+        toastr.error('Please correct the form based on the error message.', 'The Form Contain Error', {
+          "closeButton": false,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": true,
+          "positionClass": "toast-top-right",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        })
+      }
+    }
+
+    function isWholeNumber(num) {
+      return (num - Math.floor(num)) == 0;
+    }
+    function validateInfo() {
+      $(".form-group .error-label").text(""); //reset all error
+
+      var isValid = true;
+      var $distributeType = $("#input-distribution-type");
+      var $distributeStartDateTime = $("#input-distribution-start-datetime");
+      var $distributeEndDateTime = $("#input-distribution-end-datetime");
+      var $numPersonnel = $("#input-num-personnel");
+      var $numNeedy = $("#input-num-needy");
+      var $distributionItems = $("#input-distribution-items");
+      var $remark = $("#input-remark");
+      var $location = $("#input-location-search");
+      var $doorstepDistributionArea = $("#input-doorstep-distribution-area")
+      var $allInputForEmptyCheck = [$distributeType, $distributeStartDateTime, $distributeEndDateTime, $numPersonnel, $numNeedy, $distributionItems, $remark];
+      var $allInputForPositveAndWholeNumCheck = [$numPersonnel, $numNeedy]
+
+      if ($distributeType.val() == "centralised-distribution") {
+        $allInputForEmptyCheck.push($location)
+      } else {
+        $allInputForEmptyCheck.push($doorstepDistributionArea)
+      }
+
+      $allInputForEmptyCheck.forEach(($input) => {
+        if ($input.val().length <= 0) {
+          var errorLabel = $input.closest('.form-group').children(".error-label");
+          var columnName = $input.closest('.form-group').children("label").html();
+
+          if (errorLabel.html().length > 0) {
+            errorLabel.html(errorLabel.html() + "<br>")
+          }
+
+          errorLabel.html(errorLabel.html() + columnName + " Cannot be empty.");
+          isValid = false;
+        }
+      });
+
+      //Positive whole number Check
+      $allInputForPositveAndWholeNumCheck.forEach(($input) => {
+        if ($input.val() <= 0 || !isWholeNumber($input.val())) {
+          var errorLabel = $input.closest('.form-group').children(".error-label");
+          var columnName = $input.closest('.form-group').children("label").html();
+
+          if (errorLabel.html().length > 0) {
+            errorLabel.html(errorLabel.html() + "<br>")
+          }
+
+          errorLabel.html(errorLabel.html() + columnName + " Must be more than 0 and could not contain any decimal place.");
+          isValid = false;
+        }
+      })
+
+      //datetime check
+      distributeStartDateTime = moment($distributeStartDateTime.val(), 'DD-MM-YYYY hh:mm')
+      distributeEndDateTime = moment($distributeEndDateTime.val(), 'DD-MM-YYYY hh:mm')
+
+      if (distributeEndDateTime.isBefore(distributeStartDateTime)) {
+        var errorLabel = $distributeEndDateTime.closest('.form-group').children(".error-label");
+        var columnName = $distributeEndDateTime.closest('.form-group').children("label").html();
+
+        if (errorLabel.html().length > 0) {
+          errorLabel.html(errorLabel.html() + "<br>")
+        }
+
+        errorLabel.html(errorLabel.html() + columnName + " Cannot earlier than distribution start date time.");
+        isValid = false;
+      }
+
+      //check location
+      if ($distributeType.val() == "centralised-distribution" && (!$location.attr("lat-selected") || !$location.attr("long-selected"))) {
+        var errorLabel = $location.closest('.form-group').children(".error-label");
+        var columnName = $location.closest('.form-group').children("label").html();
+
+        if (errorLabel.html().length > 0) {
+          errorLabel.html(errorLabel.html() + "<br>")
+        }
+
+        errorLabel.html(errorLabel.html() + columnName + " Must be selected from TomTom API search list.");
+        isValid = false;
+
+      }
+
+      return isValid;
+
+
+    }
+
+    function fetchAllRequestFromFirestore() {
+
+
+      db.collection("mco_requests")
+        .onSnapshot(function (querySnapshot) {
+          var numOfReject = querySnapshot.docs.filter((document) => {
+            return document.data().status == "rejected";
+          }).length;
+          var numOfAccept = querySnapshot.docs.filter((document) => {
+            return document.data().status == "accepted";
+          }).length;
+          var numOfPending = querySnapshot.docs.filter((document) => {
+            return document.data().status == "pending";
+          }).length;
+
+
+          $("#rejected-table-body").empty();
+          $("#accepted-table-body").empty();
+          $("#pending-table-body").empty();
+
+          if (numOfReject <= 0) {
+            $("#rejected-table-body").append(`<td class="text-center" colspan="7">No rejected requests yet. Please try again later!</td>`)
+          }
+          if (numOfAccept <= 0) {
+            $("#accepted-table-body").append(`<td class="text-center" colspan="7">No accepted event requests yet. Please try again later!</td>`)
+          }
+          if (numOfPending <= 0) {
+            $("#pending-table-body").append(`<td class="text-center" colspan="7">No pending event requests yet. Please try again later!</td>`)
+          }
+
+
+          querySnapshot.forEach(function (document) {
+            console.log(document)
+            const doc = document.data()
+            if (doc.status == "rejected") {
+              $("#rejected-table-body").append(`
+                  <tr class="text-muted">
+                    <th scope="row">${doc.distributionType}</th>
+                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                    <td>${doc.numOfPersonnel}</td>
+                    <td>${doc.numOfNeedy}</td>
+                    <td>${doc.status}</td>
+                    <td>${doc.reason}</td>
+                  </tr>
+                    `
+              )
+            } else {
+
+              if (doc.status == "accepted") {
+                $("#accepted-table-body").append(`
+                    <tr class="text-muted">
+                      <th scope="row">${doc.distributionType}</th>
+                      <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                      <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                      <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                      <td>${doc.numOfPersonnel}</td>
+                      <td>${doc.numOfNeedy}</td>
+                      <td>${doc.status}</td>
+                    </tr>
+                    `
+                )
+
+              }
+
+              if (doc.status == "pending") {
+                $("#pending-table-body").append(`
+                  <tr class="text-muted">
+                    <th scope="row">${doc.distributionType}</th>
+                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                    <td>${doc.numOfPersonnel}</td>
+                    <td>${doc.numOfNeedy}</td>
+                    <td>${doc.status}</td>
+                  </tr>
+                  `
+                )
+              }
+
+            }
+
+          });
+
+
+        });
+    }
+    $(document).ready(function () {
+      fetchAllRequestFromFirestore();
+
+      $(".form_datetime").datetimepicker({
+        format: "dd-mm-yyyy hh:ii",
+        autoclose: true
+      });
+
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href") // activated tab
+        if (target == "#new-request") {
+          resetRequestForm();
+          map = tt.map({
+            key: apiKey,
+            container: 'map-location-wrapper',
+            center: [101.5923, 3.15],
+            style: 'tomtom://vector/1/basic-main',
+            zoom: 12
+          });
+
+        }
+      });
+
+
+      $('#input-distribution-type').on('change', function () {
+        if (this.value == "centralised-distribution") {
+          $(".centralised-distribute-additional-input").css("display", "block");
+          $(".doorstep-distribute-additional-input").css("display", "none");
+        } else {
+          $(".centralised-distribute-additional-input").css("display", "none");
+          $(".doorstep-distribute-additional-input").css("display", "block");
+        }
+      });
+
+      $("#input-location-search").on("search", () => {
+        clearLocation();
+      })
+      $('#input-location-search').keypress(function (e) {
+        if (e.which == 13) {
+          //Enter is pressed
+
+          tt.services.fuzzySearch({
+            key: apiKey,
+            query: $('#input-location-search').val(),
+            countrySet: 'MY',
+            typeahead: true
+
+          })
+            .go()
+            .then(function (response) {
+              console.log(response)
+              $("#location-result-box").empty();
+
+              if (response.results.length > 0) {
+                response.results.forEach(result => {
+                  $("#location-result-box").append(` <div class="location-result" lat='${result.position.lat}' long='${result.position.lng}' onclick='selectLocation(this)' >${result.address.freeformAddress}</div>`)
+                })
+              } else {
+                $("#location-result-box").append("<div class='location-result'> No Result found in TomTom Map API</div>");
+              }
+
+              // map = tt.map({
+              //   key: API_KEY,
+              //   container: 'map-div',
+              //   center: response.results[0].position,
+              //   zoom: 12
+              // });
+            });
+          return false;
+        } else {
+          clearLocation();
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>

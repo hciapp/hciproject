@@ -1,0 +1,481 @@
+<html>
+
+<head>
+    <title>Food search</title>
+    <!-- CSS -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.css">
+
+    <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="row navbar navbar-expand-md navbar-light bg-white sticky-top shadow-none">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="col-md-2">
+                <a class="navbar-brand ml-4" style="font-family:Helvetica Neue;color:#00c851;font-size: 1.5rem;"
+                    href="#">jomShare</a>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-4">
+                <div class="float-right mr-3 not-logged-in-wrapper">
+                    <a class="btn btn-success mr-2" href="#">Donate</a>
+                    <a class="btn btn-outline-white" onclick="showLoginRegisterForm()">Login</a>
+                </div>
+                <div class="float-right mr-3 logged-in-wrapper">
+                    <div class="mr-4 logged-in-name"
+                        style="font-family: 'Montserrat';font-size: 1rem;color: gray !important;margin: .375rem;text-align: center;">
+                        Hi, Needy</div>
+                    <a class="btn btn-outline-dark" onclick="loggout()">Logout</a>
+                </div>
+            </div>
+
+            <!-- Sidebar elements moved to navbar when collapsed -->
+            <ul class="nav mt-3 flex-column d-md-none d-lg-none">
+                <li class="nav-item">
+                    <a class="nav-link text-success" href="./storage.html">
+                        <i class="mdi mdi-home menu-icon"></i>
+                        <span class="menu-title">Storage</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light bg-secondary" href="./food-log.html">
+                        <i class="mdi mdi-currency-usd menu-icon"></i>
+                        <span class="menu-title">Food Log</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-success" href="./dist-schedule.html">
+                        <i class="mdi mdi-bell-plus menu-icon"></i>
+                        <span class="menu-title">Distribution Schedule</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-success" href="./mco-check.html">
+                        <i class="mdi mdi-settings menu-icon"></i>
+                        <span class="menu-title">MCO Request</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+
+    <!-- Main content -->
+    <div class="container-fluid">
+        <!-- Table -->
+        <h3 class="card-title py-2 mt-4">Pending for Approval</h3>
+        <div class="row pb-4">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+                <table class="table table-bordered table-striped mb-0">
+                    <thead>
+                        <tr class="text-muted">
+                            <th scope="col" style="width: 10%;">Request ID</th>
+                            <th scope="col" style="width: 10%;">Event type</th>
+                            <th scope="col" style="width: 10%;">Event Start Date & Time</th>
+                            <th scope="col" style="width: 10%;">Event End Date</th>
+                            <th scope="col" style="width: 10%;">Location</th>
+                            <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
+                            <th scope="col" style="width: 5%;">Maximum Number of Participants</th>
+                            <th scope="col" style="width: 5%;">Status</th>
+                            <th scope="col" style="width: 5%;">Requested On</th>
+                            <th scope="col" style="width: 30%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pending-table-body">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End of table -->
+        <h3 class="card-title py-2 mt-4">Application History</h3>
+        <div class="row pb-4">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+                <table class="table table-bordered table-striped mb-0">
+                    <thead>
+                        <tr class="text-muted">
+                            <th scope="col" style="width: 10%;">Request ID</th>
+                            <th scope="col" style="width: 10%;">Event type</th>
+                            <th scope="col" style="width: 10%;">Event Start Date & Time</th>
+                            <th scope="col" style="width: 10%;">Event End Date</th>
+                            <th scope="col" style="width: 15%;">Location</th>
+                            <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
+                            <th scope="col" style="width: 5%;">Maximum Number of Participants</th>
+                            <th scope="col" style="width: 15%;">Status</th>
+                            <th scope="col" style="width: 10%;">Updated On</th>
+                            <th scope="col" style="width: 10%;">Reason for Rejection</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start of modal -->
+    <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border: 0;">
+                    <h5 class="modal-title" id="exampleModalLabel">MCo request Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label>Event Request ID</label>
+                                <span class="form-control" id="modal-request-id">asfsd23asf</span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Event Type</label>
+                                <span class="form-control" id="modal-distribution-type">asfsd23asf</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Event Start Date & Time</label>
+                                <span class="form-control" id="modal-distribution-start-datetime">4/11/2020</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputPassword4">Event End Date</label>
+                                <span class="form-control" id="modal-distribution-end-datetime">4/11/2020</span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Distribution Items</label>
+                                <span class="form-control" id="modal-distribution-items">asfsd23asf</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputPassword4">Number Of Personnel (Organizer)</label>
+                                <span class="form-control" id="modal-num-of-personnel">4/11/2020</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputPassword4">Maximum Number Of Applicants</label>
+                                <span class="form-control" id="modal-maximum-num-of-applicant">4/11/2020</span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Remarks</label>
+                                <span class="form-control" id="modal-remark">asfsd23asf</span>
+                            </div>
+                            <div id="modal-doorstep-distribution-info-wrapper" class="form-group col-md-12">
+                                <label>Doorstep Distribution Area</label>
+                                <span class="form-control" id="modal-doorstep-distribution-area">asfsd23asf</span>
+                            </div>
+                            <div id="modal-centralised-distribution-info-wrapper" class="form-group col-md-12">
+                                <label>Centralised Distribution Point Address</label>
+                                <span class="form-control" id="modal-location">asfsd23asf</span>
+                                <div id="map-location-wrapper"></div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border: 0;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        style="width: 150px;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of modal -->
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.js"></script>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps-web.min.js"></script>
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/services/services-web.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <script type="text/javascript" src="firebase.js"></script>
+    <script type="text/javascript" src="loginHandler.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <script>
+        var pendingRequests = [];
+        function fetchHistoryFromFirestore() {
+            db.collection("mco_requests")
+                .where('status', 'in', ['accepted', 'rejected'])
+                .orderBy('decided_on', 'desc')
+                .onSnapshot(function (querySnapshot) {
+                    console.log(querySnapshot)
+                    $("#history-table-body").empty();
+
+                    if(querySnapshot.size <= 0) {
+                        $("#pending-table-body").append(`<td class="text-center" colspan="10">No History. You hasnt approve or reject any mco request</td>`)
+                    }
+
+                    querySnapshot.forEach(function (document) {
+                        const doc = document.data()
+
+                        $("#history-table-body").append(`
+                                <tr class="text-muted">
+                                    <th scope="row">${document.id}</th>
+                                    <td>${doc.distributionType}</td>
+                                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                                    <td>${doc.numOfPersonnel}</td>
+                                    <td>${doc.numOfNeedy}</td>
+                                    <td>${doc.status}</td>
+                                    <td>${moment(doc.decided_on.toDate()).format('DD-MM-YYYY hh:mm A') || "not Available"}</td>
+                                    <td>${doc.reason || "not Available"}</td>
+                                </tr>
+                                    `
+                        )
+
+
+
+                    });
+
+
+                });
+        }
+
+        function fetchPendingFromFirestore() {
+            db.collection("mco_requests")
+                .where('status', '==', 'pending')
+                .orderBy('last_updated', 'desc')
+                .onSnapshot(function (querySnapshot) {
+                    console.log(querySnapshot)
+                    $("#pending-table-body").empty();
+
+                    pendingRequests = [];
+
+                    if(querySnapshot.size <= 0) {
+                        $("#pending-table-body").append(`<td class="text-center" colspan="10">No Pending MCO Request yet. Please check again later</td>`)
+                    }
+
+                    querySnapshot.forEach(function (document) {
+                        const doc = document.data()
+
+                        var arrayIndex = pendingRequests.length
+
+                        pendingRequests.push({
+                            id: document.id,
+                            ...doc
+                        })
+                        $("#pending-table-body").append(`
+                                <tr class="text-muted">
+                                    <th scope="row">${document.id}</th>
+                                    <td>${doc.distributionType}</td>
+                                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                                    <td>${doc.numOfPersonnel}</td>
+                                    <td>${doc.numOfNeedy}</td>
+                                    <td>${doc.status}</td>
+                                    <td>${moment(doc.last_updated.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>
+                                        <div class="row d-flex justify-content-between mx-2">
+                                            <a class="btn btn-primary text-light col-md-3" onclick='showInfo(${arrayIndex})' >Info</a>
+
+                                            <div class="col-md-8 d-flex">
+                                                <a class="btn btn-success text-light w-50 mx-2" requestId='${document.id}' onclick='approveRequestCallback(this)'>Approve</a>
+                                                <a class="btn btn-danger text-light w-50 mx-2" requestId='${document.id}' onclick='rejectRequestCallback(this)'>Reject</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                    `
+                        )
+
+
+
+                    });
+
+
+                });
+        }
+
+        function showInfo(requestIndex) {
+            currentReqestInfo = pendingRequests[requestIndex];
+
+            $("#modal-request-id").html(currentReqestInfo.id);
+            $("#modal-distribution-type").html(currentReqestInfo.distributionType);
+            $("#modal-distribution-start-datetime").html(moment(currentReqestInfo.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
+            $("#modal-distribution-end-datetime").html(moment(currentReqestInfo.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
+            $("#modal-distribution-items").html(currentReqestInfo.distributionItems);
+            $("#modal-num-of-personnel").html(currentReqestInfo.numOfPersonnel);
+            $("#modal-maximum-num-of-applicant").html(currentReqestInfo.numOfNeedy);
+            $("#modal-remark").html(currentReqestInfo.remark);
+            $("#modal-request-id").html(currentReqestInfo.id);
+
+
+            if (currentReqestInfo.distributionType == "centralised-distribution") {
+                $("#modal-doorstep-distribution-info-wrapper").css("display", "none");
+                $("#modal-centralised-distribution-info-wrapper").css("display", "block");
+
+                $("#modal-location").html(currentReqestInfo.locationName);
+                //TomTom map initialization
+                setTimeout(() => {
+                    const apiKey = 'pDnGSI4YJIaGwPmkmQNZjLIG02H6rxB2';
+                    var map = tt.map({
+                        key: apiKey,
+                        container: 'map-location-wrapper',
+                        center: [currentReqestInfo.locationCoor.longitude, currentReqestInfo.locationCoor.latitude],
+                        style: 'tomtom://vector/1/basic-main',
+                        zoom: 12
+                    });
+                    var marker = new tt.Marker({ color: "red" }).setLngLat([currentReqestInfo.locationCoor.longitude, currentReqestInfo.locationCoor.latitude]).addTo(map);
+                }, 500);
+
+            } else {
+                $("#modal-doorstep-distribution-info-wrapper").css("display", "block");
+                $("#modal-centralised-distribution-info-wrapper").css("display", "none");
+
+                $("#modal-doorstep-distribution-area").html(currentReqestInfo.doorstepDistributionArea);
+
+
+            }
+
+
+
+            $('#itemModal').modal('show');
+
+
+        }
+        function approveRequestCallback(buttonRef) {
+            var documentId = buttonRef.getAttribute('requestId')
+
+            Swal.fire({
+                title: 'Are you sure, you want to approve this MCO request?',
+                text: "This action cannnot be undone.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, approve it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    db.collection("mco_requests").doc(documentId).update({
+                        status: "accepted",
+                        decided_on: firebase.firestore.FieldValue.serverTimestamp(),
+                    })
+                        .then(function () {
+                            Swal.fire(
+                                'The Mco Request is successfully approved!',
+                                'The Mco Request is successfully approved. NGO entity may proceed with these activity',
+                                'success'
+                            )
+                        })
+                        .catch(function (error) {
+                            console.error("Error writing document: ", error);
+                        });
+
+
+                }
+            })
+
+
+
+        }
+
+        function rejectRequestCallback(buttonRef) {
+            var documentId = buttonRef.getAttribute('requestId')
+            var reason = "";
+            Swal.fire({
+                title: 'Are you sure, you want to reject this MCO request?',
+                text: "Please enter a reason to reject the request",
+                input: 'text',
+                inputPlaceholder: 'Enter a reason',
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    return new Promise((resolve) => {
+                        if (value.length <= 0) {
+                            resolve('You must enter a reason.')
+                        } else {
+                            resolve()
+                        }
+                    })
+                }
+            }).then((result) => {
+                console.log(result)
+                if (result.isConfirmed) {
+                    reason = result.value;
+                    Swal.fire({
+                        title: 'Are you sure, you want reject this MCO request?',
+                        text: "Are you sure, you want reject this MCO request with the reason '"+reason+"'.This action cannnot be undone.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, approve it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            db.collection("mco_requests").doc(documentId).update({
+                                status: "rejected",
+                                reason: reason,
+                                decided_on: firebase.firestore.FieldValue.serverTimestamp(),
+                            })
+                                .then(function () {
+                                    Swal.fire(
+                                        'The Mco Request is successfully rejected!',
+                                        'The Mco Request is successfully rejected. NGO entity is not allowed to held these activity',
+                                        'success'
+                                    )
+                                })
+                                .catch(function (error) {
+                                    console.error("Error writing document: ", error);
+                                });
+
+
+                        }
+                    })
+                }
+                
+
+            })
+        }
+
+        $(function () {
+            fetchHistoryFromFirestore();
+            fetchPendingFromFirestore();
+        })
+
+    </script>
+</body>
+
+</html>

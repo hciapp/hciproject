@@ -1,0 +1,827 @@
+<html>
+
+<head>
+  <title>Food search</title>
+  <!-- CSS -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="row navbar navbar-expand-md navbar-light bg-white sticky-top shadow-none">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="col-lg-5 col-md-2">
+        <a class="navbar-brand ml-4" style="font-family:Helvetica Neue;color:#00c851;font-size: 1.5rem;"
+          href="#">jomShare</a>
+      </div>
+      <div class="col-lg-5 col-md-7">
+
+      </div>
+      <div class="col-lg-2 col-md-3">
+        <div class="float-right mr-3 not-logged-in-wrapper">
+          <a class="btn btn-success mr-2" href="#">Donate</a>
+          <a class="btn btn-outline-white" onclick="showLoginRegisterForm()">Login</a>
+        </div>
+        <div class="float-right mr-3 logged-in-wrapper">
+          <div class="mr-4 logged-in-name"
+            style="font-family: 'Montserrat';font-size: 1rem;color: gray !important;margin: .375rem;text-align: center;">
+            Hi, Needy</div>
+          <a class="btn btn-outline-dark" onclick="loggout()">Logout</a>
+        </div>
+      </div>
+
+      <!-- Sidebar elements moved to navbar when collapsed -->
+      <ul class="nav mt-3 flex-column d-md-none d-lg-none">
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./storage.html">
+            <i class="mdi mdi-home menu-icon"></i>
+            <span class="menu-title">Storage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./food-log.html">
+            <i class="mdi mdi-currency-usd menu-icon"></i>
+            <span class="menu-title">Food Log</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light bg-secondary" href="./dist-schedule.html">
+            <i class="mdi mdi-bell-plus menu-icon"></i>
+            <span class="menu-title">Event Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./mco-check.html">
+            <i class="mdi mdi-settings menu-icon"></i>
+            <span class="menu-title">Event Request</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <div class="row h-100">
+    <!-- Sidenav -->
+    <div class="col-md-2 col-lg-2 d-none d-md-block d-lg-block position-fixed h-100 bg-white" id="sidebar">
+      <ul class="nav mt-3 flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./storage.html">
+            <i class="mdi mdi-home menu-icon"></i>
+            <span class="menu-title">Storage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./food-log.html">
+            <i class="mdi mdi-currency-usd menu-icon"></i>
+            <span class="menu-title">Food Log</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light bg-secondary" href="./dist-schedule.html">
+            <i class="mdi mdi-bell-plus menu-icon"></i>
+            <span class="menu-title">Event Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./mco-check.html">
+            <i class="mdi mdi-settings menu-icon"></i>
+            <span class="menu-title">Event Request</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main content -->
+    <div class="col-md-10 col-lg-10 offset-md-2">
+      <h2 class="card-title py-2  mt-4">These events have been approved by the government</h2>
+      <!-- Table -->
+      <h3 class="card-title py-2  mt-4">Today's events</h3>
+      <div class="row pb-4">
+        <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+          <table class="table table-bordered table-striped mb-0">
+            <thead>
+              <tr class="text-muted">
+                <th scope="col" style="width: 10%;">Event type</th>
+                <th scope="col" style="width: 10%;">Event Start Date & Time</th>
+                <th scope="col" style="width: 10%;">Event End Date & Time</th>
+                <th scope="col" style="width: 15%;">Location</th>
+                <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
+                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
+                <th scope="col" style="width: 10%;">Current Number of Participants</th>
+                <th scope="col" style="width: 30%;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="today-table-body">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- End of Table -->
+
+      <!-- Table -->
+      <h3 class="card-title py-2  mt-4">Ongoing distributions</h3>
+      <div class="row pb-4">
+        <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+          <table class="table table-bordered table-striped mb-0">
+            <thead>
+              <tr class="text-muted">
+                <th scope="col" style="width: 10%;">Event type</th>
+                <th scope="col" style="width: 10%;">Event Start Date & Time</th>
+                <th scope="col" style="width: 10%;">Event End Date & Time</th>
+                <th scope="col" style="width: 15%;">Location</th>
+                <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
+                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
+                <th scope="col" style="width: 10%;">Current Number of Participants</th>
+                <th scope="col" style="width: 30%;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="ongoing-table-body">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- End of Table -->
+
+      <!-- Table -->
+      <h3 class="card-title py-2  mt-4">Upcoming events (Open for Registration)</h3>
+      <div class="row pb-4">
+        <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+          <table class="table table-bordered table-striped mb-0">
+            <thead>
+              <tr class="text-muted">
+                <th scope="col" style="width: 10%;">Event type</th>
+                <th scope="col" style="width: 10%;">Event Start Date & Time</th>
+                <th scope="col" style="width: 10%;">Event End Date & Time</th>
+                <th scope="col" style="width: 15%;">Location</th>
+                <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
+                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
+                <th scope="col" style="width: 10%;">Current Number of Participants</th>
+                <th scope="col" style="width: 30%;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="upcoming-table-body">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- End of Table -->
+
+      <!-- Table -->
+      <h3 class="card-title py-2  mt-4">Past Events</h3>
+      <div class="row pb-4">
+        <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+          <table class="table table-bordered table-striped mb-0">
+            <thead>
+              <tr class="text-muted">
+                <th scope="col" style="width: 10%;">Event type</th>
+                <th scope="col" style="width: 10%;">Event Start Date & Time</th>
+                <th scope="col" style="width: 10%;">Event End Date & Time</th>
+                <th scope="col" style="width: 15%;">Location</th>
+                <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
+                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
+                <th scope="col" style="width: 10%;">Current Number of Participants</th>
+                <th scope="col" style="width: 30%;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="done-table-body">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- End of Table -->
+
+    </div>
+    <!-- end of main content -->
+  </div>
+
+  <!-- Start of modal -->
+  <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="border: 0;">
+          <h5 class="modal-title" id="exampleModalLabel">Distribution Info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>Event Request Id</label>
+                <span class="form-control" id="modal-request-id">asfsd23asf</span>
+              </div>
+              <div class="form-group col-md-12">
+                <label>Event Type</label>
+                <span class="form-control" id="modal-distribution-type">asfsd23asf</span>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Event Start Date & Time</label>
+                <span class="form-control" id="modal-distribution-start-datetime">4/11/2020</span>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Event End Date & Time</label>
+                <span class="form-control" id="modal-distribution-end-datetime">4/11/2020</span>
+              </div>
+              <div class="form-group col-md-12">
+                <label>Distribution Items</label>
+                <span class="form-control" id="modal-distribution-items">asfsd23asf</span>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Number Of Personnel</label>
+                <span class="form-control" id="modal-num-of-personnel">4/11/2020</span>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Maximum Number Of Applicants</label>
+                <span class="form-control" id="modal-maximum-num-of-applicant">4/11/2020</span>
+              </div>
+              <div class="form-group col-md-12">
+                <label>Remarks</label>
+                <span class="form-control" id="modal-remark">asfsd23asf</span>
+              </div>
+              <div id="modal-doorstep-distribution-info-wrapper" class="form-group col-md-12">
+                <label>Doorstep Distribution Area</label>
+                <span class="form-control" id="modal-doorstep-distribution-area">asfsd23asf</span>
+              </div>
+              <div id="modal-centralised-distribution-info-wrapper" class="form-group col-md-12">
+                <label>Centralised Distribution Point Address</label>
+                <span class="form-control" id="modal-location">asfsd23asf</span>
+                <div id="map-location-wrapper"></div>
+              </div>
+              <div class="form-group col-md-12">
+                <label>Registered Applicant (For tracking by government)</label>
+                <table class="table table-bordered table-striped mb-0">
+                  <thead>
+                    <tr class="text-muted">
+                      <th scope="col" style="width: 20%;">Ic Number</th>
+                      <th scope="col" style="width: 25%;">Name</th>
+                      <th scope="col" style="width: 20%;">Phone</th>
+                      <th scope="col" style="width: 35%;">Address</th>
+                    </tr>
+                  </thead>
+                  <tbody id="modal-applicant-table-body">
+                    <tr class="text-muted">
+                      <td>98316</td>
+                      <td>98316</td>
+                      <td>98316</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer" style="border: 0;">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 150px;">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of modal -->
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.js"></script>
+  <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps-web.min.js"></script>
+  <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/services/services-web.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <script type="text/javascript" src="firebase.js"></script>
+  <script type="text/javascript" src="loginHandler.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+  <script>
+    var todayDistributionData = [];
+    var ongoingDistributionData = [];
+    var upcomingDistributionData = [];
+    var doneDistributionData = [];
+    console.log(moment().add(1, 'days').endOf('day').toDate());
+    function fetchAllDistribution() {
+      db.collection("mco_requests")
+        .where('status', '==', 'accepted')
+        .onSnapshot(function (querySnapshot) {
+          //today means startDate is today and is not started yet
+          var todayDistributionDocument = querySnapshot.docs.filter((document) => {
+            var startDateTime = moment(document.data().distributionStartDateTime.toDate())
+            return startDateTime.isSame(moment().startOf('day'), 'day') && moment().isBefore(startDateTime);
+          });
+
+          //ongoing means after the event startdateTime and the event is not end yet
+          var ongoingDistributionDocument = querySnapshot.docs.filter((document) => {
+            var startDateTime = moment(document.data().distributionStartDateTime.toDate())
+            var endDateTime = moment(document.data().distributionEndDateTime.toDate())
+            return moment().isAfter(startDateTime) && moment().isBefore(endDateTime);
+          });
+
+          //upcoming means after the event startdateTime and the event is not end yet
+          var upcomingDistributionDocument = querySnapshot.docs.filter((document) => {
+            var startDateTime = moment(document.data().distributionStartDateTime.toDate())
+            var endDateTime = moment(document.data().distributionEndDateTime.toDate())
+            return startDateTime.isAfter(moment().endOf('day'));
+          });
+
+          //Done means before now is after the endDateTime
+          var doneDistributionDocument = querySnapshot.docs.filter((document) => {
+            var endDateTime = moment(document.data().distributionEndDateTime.toDate())
+            return moment().isAfter(endDateTime);
+          });
+
+
+
+          console.log(querySnapshot.docs.length);
+          console.log(todayDistributionDocument);
+          console.log(ongoingDistributionDocument);
+          console.log(upcomingDistributionDocument);
+          console.log(doneDistributionDocument);
+
+
+          $("#upcoming-table-body").empty();
+          $("#today-table-body").empty();
+          $("#ongoing-table-body").empty();
+          $("#done-table-body").empty();
+
+          if (todayDistributionDocument.length <= 0) {
+            $("#today-table-body").append(`<td class="text-center" colspan="9">There are no upcoming event Today</td>`)
+          }
+          if (ongoingDistributionDocument.length <= 0) {
+            $("#ongoing-table-body").append(`<td class="text-center" colspan="9">There are no ongoing event</td>`)
+          }
+          if (upcomingDistributionDocument.length <= 0) {
+            $("#upcoming-table-body").append(`<td class="text-center" colspan="9">There are no upcoming event after today</td>`)
+          }
+          if (doneDistributionDocument.length <= 0) {
+            $("#done-table-body").append(`<td class="text-center" colspan="9">There are no finished event</td>`)
+          }
+
+
+          todayDistributionDocument.forEach(function (document) {
+            const doc = document.data()
+            console.log(doc)
+
+            var arrayIndex = todayDistributionData.length
+
+            todayDistributionData.push({
+              id: document.id,
+              ...doc
+            })
+
+            $("#today-table-body").append(`
+                                <tr class="text-muted">
+                                    <th scope="row">${doc.distributionType}</th>
+                                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                                    <td>${doc.numOfPersonnel}</td>
+                                    <td>${doc.numOfNeedy}</td>
+                                    <td>${doc.applicants ? doc.applicants.length : 0}</td>
+                                    <td>
+                                        <div class="row d-flex justify-content-between mx-2">
+                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo(${arrayIndex}, 'today')" >Info</a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                    `
+            )
+
+
+
+          });
+
+          ongoingDistributionDocument.forEach(function (document) {
+            const doc = document.data()
+
+            var arrayIndex = ongoingDistributionData.length
+
+            ongoingDistributionData.push({
+              id: document.id,
+              ...doc
+            })
+
+            $("#ongoing-table-body").append(`
+                                <tr class="text-muted">
+                                    <th scope="row">${doc.distributionType}</th>
+                                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                                    <td>${doc.numOfPersonnel}</td>
+                                    <td>${doc.numOfNeedy}</td>
+                                    <td>${doc.applicants ? doc.applicants.length : 0}</td>
+                                    <td>
+                                        <div class="row d-flex justify-content-between mx-2">
+                                          <a class="btn btn-primary text-light col-md-3" onclick="showInfo(${arrayIndex}, 'ongoing')" >Info</a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                    `
+            )
+
+
+
+          });
+
+
+          upcomingDistributionDocument.forEach(function (document) {
+            const doc = document.data()
+            console.log(doc)
+
+            var arrayIndex = upcomingDistributionData.length
+
+            upcomingDistributionData.push({
+              id: document.id,
+              ...doc
+            })
+            var shouldAllowRegister = ""
+
+            if (!doc.applicants) {
+              shouldAllowRegister = `<div class="col-md-8 d-flex">
+                                          <a class="btn btn-success text-light w-100 mx-2" onclick="registerApplicantModal('${document.id}')">Register Applicant</a>                              
+                                      </div>`
+
+            }
+
+            if (!!doc.applicants && doc.applicants.length < doc.numOfNeedy) {
+              shouldAllowRegister = `<div class="col-md-8 d-flex">
+                                          <a class="btn btn-success text-light w-100 mx-2" onclick="registerApplicantModal('${document.id}')">Register Applicant</a>                              
+                                      </div>`
+            }
+
+            if (!!doc.applicants && doc.applicants.length >= doc.numOfNeedy) {
+              shouldAllowRegister = `<div class="col-md-8 d-flex">
+                                          <span class="btn btn-danger text-light w-100 mx-2" style="pointer-events:none !important">Fully Registered</span>                              
+                                      </div>`
+            }
+
+            $("#upcoming-table-body").append(`
+                                <tr class="text-muted">
+                                    <th scope="row">${doc.distributionType}</th>
+                                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                                    <td>${doc.numOfPersonnel}</td>
+                                    <td>${doc.numOfNeedy}</td>
+                                    <td>${doc.applicants ? doc.applicants.length : 0}</td>
+                                    <td>
+                                        <div class="row d-flex justify-content-between mx-2">
+                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo(${arrayIndex}, 'upcoming')" >Info</a>
+                                            ${shouldAllowRegister
+              }
+                                        </div>
+                                    </td>
+                                </tr>
+                                    `
+            )
+
+
+
+          });
+
+          doneDistributionDocument.forEach(function (document) {
+            const doc = document.data()
+
+            var arrayIndex = doneDistributionData.length;
+
+            doneDistributionData.push({
+              id: document.id,
+              ...doc
+            })
+
+            $("#done-table-body").append(`
+                                <tr class="text-muted">
+                                    <th scope="row">${doc.distributionType}</th>
+                                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                                    <td>${doc.numOfPersonnel}</td>
+                                    <td>${doc.numOfNeedy}</td>
+                                    <td>${doc.applicants ? doc.applicants.length : 0}</td>
+                                    <td>
+                                        <div class="row d-flex justify-content-between mx-2">
+                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo(${arrayIndex}, 'done')" >Info</a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                    `
+            )
+
+
+
+          });
+
+
+
+        });
+    }
+
+    function showInfo(requestIndex, type) {
+      var currentReqestInfo = null;
+
+      switch (type) {
+        case "today":
+          currentReqestInfo = todayDistributionData[requestIndex];
+          break;
+        case "upcoming":
+          currentReqestInfo = upcomingDistributionData[requestIndex];
+          break;
+        case "ongoing":
+          currentReqestInfo = ongoingDistributionData[requestIndex];
+          break;
+        case "done":
+          currentReqestInfo = doneDistributionData[requestIndex];
+          break;
+
+      }
+
+
+      $("#modal-request-id").html(currentReqestInfo.id);
+      $("#modal-distribution-type").html(currentReqestInfo.distributionType);
+      $("#modal-distribution-start-datetime").html(moment(currentReqestInfo.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
+      $("#modal-distribution-end-datetime").html(moment(currentReqestInfo.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
+      $("#modal-distribution-items").html(currentReqestInfo.distributionItems);
+      $("#modal-num-of-personnel").html(currentReqestInfo.numOfPersonnel);
+      $("#modal-maximum-num-of-applicant").html(currentReqestInfo.numOfNeedy);
+      $("#modal-remark").html(currentReqestInfo.remark);
+      $("#modal-request-id").html(currentReqestInfo.id);
+
+      $("#modal-applicant-table-body").empty();
+      if (!!currentReqestInfo.applicants) {
+        currentReqestInfo.applicants.forEach((applicant) => {
+          $("#modal-applicant-table-body").append(`
+                    <tr class="text-muted">
+                      <td>${applicant.ic}</td>
+                      <td>${applicant.name}</td>
+                      <td>${applicant.phone}</td>
+                      <td>${applicant.address}</td>
+                    </tr>
+          `)
+        })
+
+      } else {
+        $("#modal-applicant-table-body").append(`<td class="text-center" colspan="4">There are no registered applicant yet</td>`)
+      }
+
+      if (currentReqestInfo.distributionType == "centralised-distribution") {
+        $("#modal-doorstep-distribution-info-wrapper").css("display", "none");
+        $("#modal-centralised-distribution-info-wrapper").css("display", "block");
+
+        $("#modal-location").html(currentReqestInfo.locationName);
+        //TomTom map initialization
+        setTimeout(() => {
+          const apiKey = 'pDnGSI4YJIaGwPmkmQNZjLIG02H6rxB2';
+          var map = tt.map({
+            key: apiKey,
+            container: 'map-location-wrapper',
+            center: [currentReqestInfo.locationCoor.longitude, currentReqestInfo.locationCoor.latitude],
+            style: 'tomtom://vector/1/basic-main',
+            zoom: 12
+          });
+          var marker = new tt.Marker({ color: "red" }).setLngLat([currentReqestInfo.locationCoor.longitude, currentReqestInfo.locationCoor.latitude]).addTo(map);
+        }, 500);
+
+      } else {
+        $("#modal-doorstep-distribution-info-wrapper").css("display", "block");
+        $("#modal-centralised-distribution-info-wrapper").css("display", "none");
+
+        $("#modal-doorstep-distribution-area").html(currentReqestInfo.doorstepDistributionArea);
+
+
+      }
+
+
+
+      $('#itemModal').modal('show');
+
+
+    }
+
+    function registerApplicantModal(documentId) {
+      Swal.fire({
+        title: 'Register an applicant to this event.',
+        showCancelButton: true,
+        confirmButtonText: 'Add applicant',
+        confirmButtonColor: '#00c851',
+        html: `
+            <div class="w-100">
+              <div class="form-group">
+                <label for="input-applicant-ic">Applicant IC number</label>
+                <div class="input-group">
+                  <input class="form-control" id="input-applicant-ic" type="text">
+                </div>
+                <span class="error-label"></span>
+              </div>
+              <div class="form-group">
+                <label for="input-applicant-name">Applicant Name as per NRIC</label>
+                <div class="input-group">
+                  <input class="form-control" id="input-applicant-name" type="text">
+                </div>
+                <span class="error-label"></span>
+              </div>
+              <div class="form-group">
+                <label for="input-applicant-contact">Applicant contact number</label>
+                <div class="input-group">
+                  <input class="form-control" id="input-applicant-contact" type="text">
+                </div>
+                <span class="error-label"></span>
+              </div>
+              <div class="form-group">
+                <label for="input-applicant-address">Applicant Address</label>
+                <div class="input-group">
+                  <input class="form-control" id="input-applicant-address" type="text">
+                </div>
+                <span class="error-label"></span>
+              </div>
+            </div>
+            `,
+        preConfirm: () => {
+          if (!validateNewApplicantForm()) {
+            return false;
+          }
+
+          var applicantIc = $("#input-applicant-ic").val();
+          var applicantName = $("#input-applicant-name").val();
+          var applicantContact = $("#input-applicant-contact").val();
+          var applicantAddress = $("#input-applicant-address").val();
+
+          var applicantObj = {
+            ic: applicantIc,
+            name: applicantName,
+            phone: applicantContact,
+            address: applicantAddress
+          }
+
+          return applicantObj;
+
+
+        }
+
+      }).then(async (result) => {
+
+        if (result.isConfirmed) {
+          //confirmed
+
+          var mcoRequest = await db.collection("mco_requests").doc(documentId).get().then((d) => { return d });
+          var mcoRequestData = mcoRequest.data();
+          var applicants = mcoRequestData.applicants
+          console.log(applicants);
+          if (!!applicants) {
+            applicants.push(result.value);
+          } else {
+            applicants = [];
+            applicants.push(result.value);
+          }
+
+          db.collection("mco_requests").doc(documentId).update({
+            applicants: applicants
+          })
+            .then(function () {
+              Swal.fire(
+                'The Applicant is successfully added',
+                'The applicant is now registered to the event. please print the ticket as an evidence for the applicant',
+                'success'
+              ).then((res) => {
+                var tab = window.open('Applicant Ticket', '_blank');
+                tab.document.write(`
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+                    <body>
+                      <div class="container text-center">
+                        <img src="resources/qrcode-sample.png" width="300" height="300"/>
+                        <h3>This is a computer generated offical ticket that certified that the applicant below:</h3>  
+                        <p>
+                          The applicant info are as below <br>
+                          <span class="font-weight-bold">Applicant Name:</span> ${result.value.name}  <br>
+                          <span class="font-weight-bold">Applicant ic:</span> ${result.value.ic}  <br>
+                          <span class="font-weight-bold">Applicant contact:</span> ${result.value.phone}  <br>
+                          <span class="font-weight-bold">Applicant address:</span> ${result.value.address}  <br>
+                          <hr/>
+                          The event infomation are as below: <br>
+                          <span class="font-weight-bold">Event ID:</span> ${mcoRequest.id}  <br>
+                          <span class="font-weight-bold">Event Type:</span> ${mcoRequestData.distributionType}  <br>
+                          <span class="font-weight-bold">Event StartDateTime:</span> ${moment(mcoRequestData.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}  <br>
+                          <span class="font-weight-bold">Event End DateTime:</span> ${moment(mcoRequestData.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}  <br>
+                          <span class="font-weight-bold">Event Location:</span> ${mcoRequestData.locationName || mcoRequestData.doorstepDistributionArea}  <br>
+                          <span class="font-weight-bold">Event Distributions Items:</span> ${mcoRequestData.distributionItems}  <br>
+                        </p>
+                        
+                      </div>
+                    </body>
+                
+                `); // where 'html' is a variable containing your HTML
+                tab.document.close(); // to finish loading the page
+              })
+
+
+
+
+            })
+            .catch(function (error) {
+              console.error("Error writing document: ", error);
+            });
+        }
+      })
+
+    }
+
+    function validateNewApplicantForm() {
+      var isValid = true;
+      var $applicantIc = $("#input-applicant-ic");
+      var $applicantName = $("#input-applicant-name");
+      var $applicantContact = $("#input-applicant-contact");
+      var $applicantAddress = $("#input-applicant-address");
+      var $allInputForEmptyCheck = [$applicantIc, $applicantName, $applicantContact, $applicantAddress];
+
+      $(".error-label").html("");
+      $allInputForEmptyCheck.forEach(($input) => {
+        if ($input.val().length <= 0) {
+          var errorLabel = $input.closest('.form-group').children(".error-label");
+          var columnName = $input.closest('.form-group').children("label").html();
+
+          if (errorLabel.html().length > 0) {
+            errorLabel.html(errorLabel.html() + "<br>")
+          }
+
+          errorLabel.html(errorLabel.html() + columnName + " Cannot be empty.");
+          isValid = false;
+        }
+      });
+
+      //Ic format check
+      var icRegex = /^[0-9]{6}\-[0-9]{2}\-[0-9]{4}$/
+      if (!icRegex.test($applicantIc.val())) {
+        var errorLabel = $applicantIc.closest('.form-group').children(".error-label");
+
+        if (errorLabel.html().length > 0) {
+          errorLabel.html(errorLabel.html() + "<br>")
+        }
+
+        errorLabel.html(errorLabel.html() + "must be in the format xxxxxx-xx-xxxx");
+
+        isValid = false;
+      }
+
+      //Ic format check
+      var contactRegex = /^[0-9]{3}\-[0-9]{7}$/
+      if (!contactRegex.test($applicantContact.val())) {
+        var errorLabel = $applicantContact.closest('.form-group').children(".error-label");
+
+        if (errorLabel.html().length > 0) {
+          errorLabel.html(errorLabel.html() + "<br>")
+        }
+
+        errorLabel.html(errorLabel.html() + "must be in the format xxx-xxxxxxx");
+
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    fetchAllDistribution();
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,341 @@
+<html>
+
+<head>
+  <title>Food search</title>
+  <!-- CSS -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="row navbar navbar-expand-md navbar-light bg-white sticky-top shadow-none">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="col-md-2">
+        <a class="navbar-brand ml-4" style="font-family:Helvetica Neue;color:#00c851;font-size: 1.5rem;"
+          href="#">jomShare</a>
+
+      </div>
+      <div class="col-md-6">
+
+      </div>
+      <div class="col-md-4">
+        <div class="float-right mr-3 not-logged-in-wrapper">
+          <a class="btn btn-success mr-2" href="#">Donate</a>
+          <a class="btn btn-outline-white" onclick="showLoginRegisterForm()">Login</a>
+        </div>
+        <div class="float-right mr-3 logged-in-wrapper">
+          <div class="mr-4 logged-in-name"
+            style="font-family: 'Montserrat';font-size: 1rem;color: gray !important;margin: .375rem;text-align: center;">
+            Hi, Needy</div>
+          <a class="btn btn-outline-dark" onclick="loggout()">Logout</a>
+        </div>
+      </div>
+
+      <!-- Sidebar elements moved to navbar when collapsed -->
+      <ul class="nav mt-3 flex-column d-md-none d-lg-none">
+        <li class="nav-item">
+          <a class="nav-link text-light bg-secondary" href="./storage.html">
+            <i class="mdi mdi-home menu-icon"></i>
+            <span class="menu-title">Storage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./food-log.html">
+            <i class="mdi mdi-currency-usd menu-icon"></i>
+            <span class="menu-title">Food Log</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./dist-schedule.html">
+            <i class="mdi mdi-bell-plus menu-icon"></i>
+            <span class="menu-title">Event Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./mco-check.html">
+            <i class="mdi mdi-settings menu-icon"></i>
+            <span class="menu-title">Event Request</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <div class="row h-100">
+    <!-- Sidenav -->
+    <div class="col-md-2 col-lg-2 d-none d-md-block d-lg-block position-fixed h-100 bg-white" id="sidebar">
+      <ul class="nav mt-3 flex-column">
+        <li class="nav-item">
+          <a class="nav-link  text-light bg-secondary" href="./storage.html">
+            <i class="mdi mdi-home menu-icon"></i>
+            <span class="menu-title">Storage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./food-log.html">
+            <i class="mdi mdi-currency-usd menu-icon"></i>
+            <span class="menu-title">Food Log</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./dist-schedule.html">
+            <i class="mdi mdi-bell-plus menu-icon"></i>
+            <span class="menu-title">Event Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-success" href="./mco-check.html">
+            <i class="mdi mdi-settings menu-icon"></i>
+            <span class="menu-title">Event Request</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main content -->
+    <div class="col-md-10 col-lg-10 offset-md-2">
+      <div class="pt-3 pl-3 pr-3" id="stockContainer">
+        
+
+      </div>
+      <!-- Start of modal -->
+      <div class="modal fade" id="stockSummaryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="height:80%">
+          <div class="modal-header" style="border: 0;">
+            <h5 class="modal-title" id="exampleModalLabel">Consumble List</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+                <table class="table table-bordered table-striped mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 15%;">ID</th>
+                      <th scope="col" style="width: 35%;">Brand</th>
+                      <th scope="col" style="width: 20%;">Storage room</th>
+                      <th scope="col" style="width: 12%;">Weight (KG)</th>
+                      <th scope="col" style="width: 18%;">Expiry Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="modal-stockListContainer">
+                    <tr>
+                      <th scope="row">A00125</th>
+                      <td>Brand A</td>
+                      <td>Storage Room A</td>
+                      <td>4</td>
+                      <td>20/2/2020</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">A00265</th>
+                      <td>Brand B</td>
+                      <td>Storage Room B</td>
+                      <td>4</td>
+                      <td>20/11/2020</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-danger">A00086</th>
+                      <td class="text-danger">Brand C</td>
+                      <td class="text-danger">Storage Room A</td>
+                      <td class="text-danger">3</td>
+                      <td class="text-danger">29/10/2020</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- End of table -->
+            </div>
+          </div>
+          <div class="modal-footer" style="border: 0;">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 150px;">Close</button>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- End of modal -->
+    </div>
+    <!-- end of main content -->
+
+  </div>
+
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.0/dist/sweetalert2.min.js"></script>
+
+  <script type="text/javascript" src="firebase.js"></script>
+  <script type="text/javascript" src="loginHandler.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+
+  <script>
+    //global variable to store stock list
+    var stockList = [];
+
+    function showStockSummaryDetail(stockType){
+
+      $('#modal-stockListContainer').empty();
+      
+      var stockTypeList = []
+      stockList.forEach(stock=>{
+
+        if(stock.type.toLowerCase() === stockType.toLowerCase()){
+          stockTypeList.push(stock);
+          
+        }
+      })
+
+      stockTypeList.sort((a,b)=>{
+        var orderBool = a.expiryDate.toDate > b.expiryDate.toDate;
+        return orderBool ? 1 : -1;
+      });
+
+      stockTypeList.forEach(stock=>{
+        var isPastExpiryDate = stock.expiryDate.toDate() < new Date();
+          $('#modal-stockListContainer').append(`
+              <tr>
+                <th scope="row" ${isPastExpiryDate?'class="text-danger"':""}>${stock.id}</th>
+                <td ${isPastExpiryDate?'class="text-danger"':""}>${stock.brand}</td>
+                <td ${isPastExpiryDate?'class="text-danger"':""}>${stock.storageRoom}</td>
+                <td ${isPastExpiryDate?'class="text-danger"':""}>${stock.numOfStock}</td>
+                <td ${isPastExpiryDate?'class="text-danger"':""}>${stock.expiryDate.toDate().getFullYear()}-${stock.expiryDate.toDate().getMonth()+1}-${stock.expiryDate.toDate().getDate()}</td>
+              </tr>
+          `
+          );
+      })
+
+      $('#stockSummaryModal').modal('show');
+
+     
+
+
+    }
+
+    function fetchFoodStockFromFirestore() {
+      db.collection("stocks")
+          .onSnapshot(function (querySnapshot) {
+              $("#stockContainer").empty();
+
+              if(querySnapshot.size <= 0) {
+                  $("#stockList-table-body").append(`<td class="text-center" colspan="7">No record yet. Please check again later.</td>`)
+              }
+
+              querySnapshot.forEach(function (document) {
+                  const doc = document.data();
+
+                  const myJsonObj = {
+                      id: document.id,
+                      ...doc
+                  };
+
+                  stockList.push(myJsonObj);
+              });
+
+              //calculate the total for each food
+              var summaryList = [];
+
+              stockList.forEach(stock=>{
+
+                var isPastExpiryDate = stock.expiryDate.toDate() < new Date();
+
+                var foundExistingSummary = false;
+                summaryList.forEach(summary=>{
+                  if(summary.type === stock.type){
+                    summary.totalStock += stock.numOfStock;
+                    summary.expiryEntry += isPastExpiryDate?1:0;
+                    foundExistingSummary = true;
+                  }
+                })
+
+                //means the item type summary not exist yet, we add it now
+                if(foundExistingSummary === false){
+                  summaryList.push({
+                    type: stock.type,
+                    totalStock: stock.numOfStock,
+                    expiryEntry: isPastExpiryDate?1:0
+                  })
+                }
+              })
+
+              summaryList.sort((a,b)=>{
+                var orderBool = a.type > b.type;
+                return orderBool ? 1 : -1;
+              });
+
+              console.log(summaryList);
+              summaryList.forEach(summary=>{
+                $("#stockContainer").append(`
+                    <div class="col-lg-3 pb-3 d-inline-block" onclick="showStockSummaryDetail('${summary.type}')">
+                      <div class="card py-2 px-1" >
+                        <div class="card-body">
+                          <h3 class="card-title">${summary.type}</h3>
+                          <ul class="item-desc">
+                            <li><span class="fa fa-fw fa-bar-chart"></span><a>Total stock: ${summary.totalStock} Kg</a></li>
+                            <li><span class="fa fa-fw fa-bar-chart text-danger"></span><a class="text-danger">Total past expiry: ${summary.expiryEntry}
+                                Entry(s)</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  `
+                )
+              })
+          });
+    }
+
+    $(document).ready(function () {
+      fetchFoodStockFromFirestore();
+
+      $("#filter-list a").click(function () {
+        if ($(this).data("value") == 1) {
+          $(this).data("value", 0)
+          $(this).removeClass("btn-success")
+          $(this).addClass("btn-secondary")
+        } else {
+          $(this).data("value", 1)
+          $(this).removeClass("btn-secondary")
+          $(this).addClass("btn-success")
+        }
+      });
+
+    });
+  </script>
+</body>
+
+</html>
