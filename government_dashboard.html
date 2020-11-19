@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Food search</title>
+    <title>safeGather</title>
     <!-- CSS -->
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -35,6 +35,7 @@
             </div>
             <div class="col-md-4">
                 <div class="float-right mr-3 not-logged-in-wrapper">
+                    <a class="btn btn-success mr-2" href="help.html" target="_blank">Help</a>
                     <a class="btn btn-outline-white" onclick="showLoginRegisterForm()">Login</a>
                 </div>
                 <div class="float-right mr-3 logged-in-wrapper">
@@ -50,25 +51,25 @@
                 <li class="nav-item">
                     <a class="nav-link text-success" href="./storage.html">
                         <i class="mdi mdi-home menu-icon"></i>
-                        <span class="menu-title">Storage</span>
+                        <span class="menu-title">Inventory Summary</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light bg-secondary" href="./food-log.html">
                         <i class="mdi mdi-currency-usd menu-icon"></i>
-                        <span class="menu-title">Food Log</span>
+                        <span class="menu-title">Inventory Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-success" href="./dist-schedule.html">
                         <i class="mdi mdi-bell-plus menu-icon"></i>
-                        <span class="menu-title">Distribution Schedule</span>
+                        <span class="menu-title">Event Schedule</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-success" href="./mco-check.html">
                         <i class="mdi mdi-settings menu-icon"></i>
-                        <span class="menu-title">MCO Request</span>
+                        <span class="menu-title">Event Request</span>
                     </a>
                 </li>
             </ul>
@@ -136,7 +137,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="border: 0;">
-                    <h5 class="modal-title" id="exampleModalLabel">MCo request Info</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Event request Info</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

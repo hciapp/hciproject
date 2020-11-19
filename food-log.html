@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>Food search</title>
+  <title>safeGather</title>
   <!-- CSS -->
   <!-- CSS -->
   
@@ -37,6 +37,7 @@
       </div>
       <div class="col-lg-2 col-md-3">
         <div class="float-right mr-3 not-logged-in-wrapper">
+          <a class="btn btn-success mr-2" href="help.html" target="_blank">Help</a>
           <a class="btn btn-outline-white" onclick="showLoginRegisterForm()">Login</a>
         </div>
         <div class="float-right mr-3 logged-in-wrapper">
@@ -52,13 +53,13 @@
         <li class="nav-item">
           <a class="nav-link text-success" href="./storage.html">
             <i class="mdi mdi-home menu-icon"></i>
-            <span class="menu-title">Storage</span>
+            <span class="menu-title">Inventory Summary</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-light bg-secondary" href="./food-log.html">
             <i class="mdi mdi-currency-usd menu-icon"></i>
-            <span class="menu-title">Food Log</span>
+            <span class="menu-title">Inventory Management</span>
           </a>
         </li>
         <li class="nav-item">
@@ -85,13 +86,13 @@
         <li class="nav-item">
           <a class="nav-link text-success" href="./storage.html">
             <i class="mdi mdi-home menu-icon"></i>
-            <span class="menu-title">Storage</span>
+            <span class="menu-title">Inventory Summary</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-light bg-secondary" href="./food-log.html">
             <i class="mdi mdi-currency-usd menu-icon"></i>
-            <span class="menu-title">Food Log</span>
+            <span class="menu-title">Inventory Management</span>
           </a>
         </li>
         <li class="nav-item">
@@ -112,7 +113,7 @@
     <!-- Main content -->
     <div class="col-md-10 col-lg-10 offset-md-2">
       <h3 class="card-title py-2">
-        Food Inventory Log
+        Detailed Inventory Log
         <button type="button" class="btn btn-primary" onclick="showFoodForm()">Add Food</button>
       </h3>
       <div class="row container">
@@ -157,7 +158,7 @@
                 <form>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label>Food Inventory Id</label>
+                            <label>Item ID</label>
                             <span class="form-control" id="modal-inventory-id"></span>
                         </div>
                         <div class="form-group col-md-12">
