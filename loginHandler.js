@@ -32,8 +32,8 @@ function loggout() {
 function redirectUserWhenNotAuthorized() {
     var userRef = db.collection("users").doc(firebase.auth().currentUser.uid);
     var currentPage=window.location.pathname.split( '/' ).slice(-1)[0];
-    const governmentAllowedPage = ['government_dashboard.html'];
-    const ngoAllowedPage = ['dist-schedule.html', 'food-log.html', 'mco-check.html', 'storage.html'];
+    const governmentAllowedPage = ['government_dashboard.html', 'help.html'];
+    const ngoAllowedPage = ['dist-schedule.html', 'food-log.html', 'mco-check.html', 'storage.html', 'help.html'];
     
     userRef.get().then(function (doc) {
         var userData = doc.data();
@@ -66,7 +66,7 @@ function redirectUserWhenNotAuthorized() {
 
 function redirectUserWhenNotLogin() {
     var currentPage=window.location.pathname.split( '/' ).slice(-1)[0];
-    const guestAllowedPage = ['index.html'];
+    const guestAllowedPage = ['index.html', 'help.html'];
 
     if(guestAllowedPage.indexOf(currentPage) == -1) {
         //redirect user to default home page
