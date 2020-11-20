@@ -473,14 +473,14 @@
               .then(function (docRef) {
                 swalWithBootstrapButtons.fire(
                   'Submitted!',
-                  'Your Mco request is now pending for approval!',
+                  'Your event request is now pending for approval!',
                   'success'
                 ).then(() => {
                   $("#home-tab").tab('show')
                 })
               })
               .catch(function (error) {
-                toastr.error(error, 'Some error occured', {
+                toastr.error(error, 'Some error occurred', {
                   "closeButton": false,
                   "debug": false,
                   "newestOnTop": false,
@@ -573,7 +573,7 @@
             errorLabel.html(errorLabel.html() + "<br>")
           }
 
-          errorLabel.html(errorLabel.html() + columnName + " Must be more than 0 and could not contain any decimal place.");
+          errorLabel.html(errorLabel.html() + columnName + " Must be more than 0 and can not contain any decimal place.");
           isValid = false;
         }
       })
@@ -590,7 +590,7 @@
           errorLabel.html(errorLabel.html() + "<br>")
         }
 
-        errorLabel.html(errorLabel.html() + columnName + " Cannot earlier than distribution start date time.");
+        errorLabel.html(errorLabel.html() + columnName + " Cannot be earlier than the event start date & time.");
         isValid = false;
       }
 
