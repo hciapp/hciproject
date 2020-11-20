@@ -99,33 +99,42 @@
       <!-- End of Table -->
 
       <!-- Table -->
-      <h3 class="card-title py-2  mt-4">Today's events</h3>
-      <div class="row pb-4">
-        <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
-          <table class="table table-bordered table-striped mb-0">
-            <thead>
-              <tr class="text-muted">
-                <th scope="col" style="width: 6%;">Event ID</th>
-                <th scope="col" style="width: 10%;">Event type</th>
-                <th scope="col" style="width: 10%;">Event Start Date & Time</th>
-                <th scope="col" style="width: 10%;">Event End Date & Time</th>
-                <th scope="col" style="width: 15%;">Location</th>
-                <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
-                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
-                <th scope="col" style="width: 10%;">Current Number of Participants</th>
-                <th scope="col" style="width: 30%;">Action</th>
-              </tr>
-            </thead>
-            <tbody id="today-table-body">
+      <h3 class="card-title py-2 mt-4">Upcoming events (Open for Registration)</h3>
+      <div class="form-row ">
+        <h5 class="card-title mt-4">Search filter.(Location search only applicable to 'centralised-distribution')</h5>
+        <div class="col-md-9 form-group position-relative">
+          <label for="input-location-search">Exact Distribution Location <a class="btn btn-light" onclick="useMyLocationInSearchBar()" style="background:#888888 !important;padding:5px" >Search Using My Address</a></label>
+          <div class="input-group has-search">
+            <input type="search" class="form-control" id="input-location-search"
+              placeholder="Search Location Here(ex: Jalan sunway..)">
+            <span class="fa fa-search form-control-feedback"></span>
+          </div>
+          <span class="error-label"></span>
+          <div id="location-result-box">
+          </div>
 
-            </tbody>
-          </table>
         </div>
-      </div>
-      <!-- End of Table -->
+        <div class="col-md-3 form-group position-relative">
+          <label for="input-location-search-tolerance" style="padding:8.5px;">Distance tolerance by km</label>
+          <input type="number" min="1" class="form-control" id="input-location-search-tolerance"
+            placeholder="Distance tolerance" value="10">
+          <span class="error-label"></span>
+          <div id="location-result-boxs">
+          </div>
 
-      <!-- Table -->
-      <h3 class="card-title py-2  mt-4">Upcoming events (Open for Registration)</h3>
+        </div>
+
+        <div class="col-md-3 form-group position-relative">
+          <label for="input-distribution-type">Event Type</label>
+          <select class="form-control" id="input-search-distribution-type">
+            <option value="all">All Distribution</option>
+            <option value="centralised-distribution">Centralised Distribution</option>
+            <option value="doorstep-distribution">Doorstep Distribution</option>
+          </select>
+
+        </div>
+        <a class="col-md-2 btn btn-success text-white" onclick="searchWithCondition()" style="height: 50px;margin-top: 20px;">Search</a>
+      </div>
       <div class="row pb-4">
         <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
           <table class="table table-bordered table-striped mb-0">
@@ -256,47 +265,40 @@
     var myEventDistributionData = [];
     var todayDistributionData = [];
     var upcomingDistributionData = [];
-    
+
+    var filteredUpcomingDistributionData = [];
+    const apiKey = 'pDnGSI4YJIaGwPmkmQNZjLIG02H6rxB2';
+    var marker = new tt.Marker({ color: "red" });
+
+    //TomTom map initialization
+    var map = tt.map({
+      key: apiKey,
+      container: 'map-location-wrapper',
+      center: [101.5923, 3.15],
+      style: 'tomtom://vector/1/basic-main',
+      zoom: 12
+    });
+
     function fetchAllDistribution() {
       db.collection("mco_requests")
         .where('status', '==', 'accepted')
         .onSnapshot(function (querySnapshot) {
+          console.log("called")
           //today means startDate is today and is not started yet
           var myEventDistributionDocument = querySnapshot.docs.filter((document) => {
             var applicants = document.data().applicants;
             var myId = firebase.auth().currentUser.uid;
             var isMyEvent = false;
 
-            if(applicants !== undefined){
-              applicants.map(applicantData=>{
-                if(applicantData.userId !== undefined && applicantData.userId === myId){
+            if (applicants !== undefined) {
+              applicants.map(applicantData => {
+                if (applicantData.userId !== undefined && applicantData.userId === myId) {
                   isMyEvent = true;
                 }
               })
             }
-            
+
             return isMyEvent;
-          });
-
-          //today means startDate is today and is not started yet
-          var todayDistributionDocument = querySnapshot.docs.filter((document) => {
-            var startDateTime = moment(document.data().distributionStartDateTime.toDate())
-
-            //check if the event already enrolled by current account 
-            //show only if havent enrolled
-            var applicants = document.data().applicants;
-            var myId = firebase.auth().currentUser.uid;
-            var isMyEvent = false;
-
-            if(applicants !== undefined){
-              applicants.map(applicantData=>{
-                if(applicantData.userId !== undefined && applicantData.userId === myId){
-                  isMyEvent = true;
-                }
-              })
-            }
-
-            return startDateTime.isSame(moment().startOf('day'), 'day') && moment().isBefore(startDateTime) && isMyEvent === false;
           });
 
           //upcoming means after the event startdateTime and the event is not end yet
@@ -310,9 +312,9 @@
             var myId = firebase.auth().currentUser.uid;
             var isMyEvent = false;
 
-            if(applicants !== undefined){
-              applicants.map(applicantData=>{
-                if(applicantData.userId !== undefined && applicantData.userId === myId){
+            if (applicants !== undefined) {
+              applicants.map(applicantData => {
+                if (applicantData.userId !== undefined && applicantData.userId === myId) {
                   isMyEvent = true;
                 }
               })
@@ -323,20 +325,20 @@
           });
 
 
-          $("#myevent-table-body").empty();  
-          $("#today-table-body").empty();
-          $("#upcoming-table-body").empty();  
+          $("#myevent-table-body").empty();
+          $("#upcoming-table-body").empty();
 
 
           if (myEventDistributionDocument.length <= 0) {
             $("#myevent-table-body").append(`<td class="text-center" colspan="9">You have no registered event yet</td>`)
           }
-          if (todayDistributionDocument.length <= 0) {
-            $("#today-table-body").append(`<td class="text-center" colspan="9">There are no event Today</td>`)
-          }
           if (upcomingDistributionDocument.length <= 0) {
             $("#upcoming-table-body").append(`<td class="text-center" colspan="9">There are no upcoming event after today</td>`)
           }
+
+          myEventDistributionData = [];
+          upcomingDistributionData =[];
+
 
           myEventDistributionDocument.forEach(function (document) {
             const doc = document.data()
@@ -350,7 +352,7 @@
 
             $("#myevent-table-body").append(`
                                 <tr class="text-muted">
-                                    <td scope="row">${doc.id}</th>
+                                    <td scope="row">${doc.eventId}</th>
                                     <th scope="row">${doc.distributionType}</th>
                                     <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
@@ -360,44 +362,10 @@
                                     <td>${doc.applicants ? doc.applicants.length : 0}</td>
                                     <td>
                                         <div class="row d-flex justify-content-between mx-2">
-                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo(${arrayIndex}, 'myevent')" >Info</a>
+                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo('${doc.eventId}', 'myevent')" >Info</a>
                                             <div class="col-md-8 d-flex">
                                               <span class="btn btn-danger text-light w-100 mx-2" onclick="unRegisterApplicantModal('${document.id}')">Unenroll</span>                              
                                           </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                    `
-            )
-
-
-
-          });
-
-          todayDistributionDocument.forEach(function (document) {
-            const doc = document.data()
-
-            var arrayIndex = todayDistributionData.length
-
-            todayDistributionData.push({
-              id: document.id,
-              ...doc
-            })
-
-            $("#today-table-body").append(`
-                                <tr class="text-muted">
-                                    <td scope="row">${doc.id}</th>
-                                    <th scope="row">${doc.distributionType}</th>
-                                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
-                                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
-                                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
-                                    <td>${doc.numOfPersonnel}</td>
-                                    <td>${doc.numOfNeedy}</td>
-                                    <td>${doc.applicants ? doc.applicants.length : 0}</td>
-                                    <td>
-                                        <div class="row d-flex justify-content-between mx-2">
-                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo(${arrayIndex}, 'today')" >Info</a>
-
                                         </div>
                                     </td>
                                 </tr>
@@ -451,7 +419,7 @@
                                     <td>${doc.applicants ? doc.applicants.length : 0}</td>
                                     <td>
                                         <div class="row d-flex justify-content-between mx-2">
-                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo(${arrayIndex}, 'upcoming')" >Info</a>
+                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo('${doc.eventId}', 'upcoming')" >Info</a>
                                             ${shouldAllowRegister
               }
                                         </div>
@@ -468,30 +436,20 @@
         });
     }
 
-    function showInfo(requestIndex, type) {
+    function showInfo(eventId, type) {
       var currentReqestInfo = null;
-
       switch (type) {
         case "myevent":
-          currentReqestInfo = myEventDistributionData[requestIndex];
-          break;
-        case "today":
-          currentReqestInfo = todayDistributionData[requestIndex];
+          currentReqestInfo = myEventDistributionData.filter((e)=>{return e.eventId == eventId})[0];
           break;
         case "upcoming":
-          currentReqestInfo = upcomingDistributionData[requestIndex];
-          break;
-        case "ongoing":
-          currentReqestInfo = ongoingDistributionData[requestIndex];
-          break;
-        case "done":
-          currentReqestInfo = doneDistributionData[requestIndex];
+          currentReqestInfo = upcomingDistributionData.filter((e)=>{return e.eventId == eventId})[0];
           break;
 
       }
 
 
-      $("#modal-request-id").html(currentReqestInfo.id);
+      $("#modal-request-id").html(currentReqestInfo.eventId);
       $("#modal-distribution-type").html(currentReqestInfo.distributionType);
       $("#modal-distribution-start-datetime").html(moment(currentReqestInfo.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
       $("#modal-distribution-end-datetime").html(moment(currentReqestInfo.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
@@ -499,7 +457,6 @@
       $("#modal-num-of-personnel").html(currentReqestInfo.numOfPersonnel);
       $("#modal-maximum-num-of-applicant").html(currentReqestInfo.numOfNeedy);
       $("#modal-remark").html(currentReqestInfo.remark);
-      $("#modal-request-id").html(currentReqestInfo.id);
 
       if (currentReqestInfo.distributionType == "centralised-distribution") {
         $("#modal-doorstep-distribution-info-wrapper").css("display", "none");
@@ -557,7 +514,7 @@
           });
 
           var myId = firebase.auth().currentUser.uid;
-          db.collection("users").doc(myId).get().then(async (doc)=>{
+          db.collection("users").doc(myId).get().then(async (doc) => {
             var userData = doc.data();
 
             var applicantObj = {
@@ -587,15 +544,15 @@
             db.collection("mco_requests").doc(documentId).update({
               applicants: applicants
             })
-            .then(function () {
-              Swal.close();
-              Swal.fire(
-                'You have successfully enrolled',
-                'You are now registered to the event. please print the ticket as an evidence for the applicant',
-                'success'
-              ).then((res) => {
-                var tab = window.open('Applicant Receipt', '_blank');
-                tab.document.write(`
+              .then(function () {
+                Swal.close();
+                Swal.fire(
+                  'You have successfully enrolled',
+                  'You are now registered to the event. please print the ticket as an evidence for the applicant',
+                  'success'
+                ).then((res) => {
+                  var tab = window.open('Applicant Receipt', '_blank');
+                  tab.document.write(`
                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
                     <body>
                       <div class="container text-center">
@@ -621,13 +578,13 @@
                     </body>
                 
                 `); // where 'html' is a variable containing your HTML
-                tab.document.close(); // to finish loading the page
-              })
+                  tab.document.close(); // to finish loading the page
+                })
 
-            })
-            .catch(function (error) {
-              console.error("Error writing document: ", error);
-            });
+              })
+              .catch(function (error) {
+                console.error("Error writing document: ", error);
+              });
           });
         }
       })
@@ -653,7 +610,7 @@
           });
 
           console.log(documentId);
-          
+
           var myId = firebase.auth().currentUser.uid;
           var mcoRequest = await db.collection("mco_requests").doc(documentId).get().then((d) => { return d });
           var mcoRequestData = mcoRequest.data();
@@ -661,28 +618,216 @@
 
           var applicants = mcoRequestData.applicants
 
-          newApplicant = applicants.filter((applicantData)=>{
+          newApplicant = applicants.filter((applicantData) => {
             return applicantData.userId !== undefined && applicantData.userId !== myId;
           })
 
           db.collection("mco_requests").doc(documentId).update({
             applicants: newApplicant
           })
-          .then(function () {
-            Swal.close();
-            Swal.fire(
-              'The Successfully unregistered',
-              'You have unenrolled from the event.',
-              'success'
-            )
-          })
-          .catch(function (error) {
-            console.error("Error writing document: ", error);
-          });
+            .then(function () {
+              Swal.close();
+              Swal.fire(
+                'The Successfully unregistered',
+                'You have unenrolled from the event.',
+                'success'
+              )
+            })
+            .catch(function (error) {
+              console.error("Error writing document: ", error);
+            });
         }
       })
     }
+    const selectLocation = (element) => {
+      $("#location-result-box").empty();
+      var inputLocationSearch = document.getElementById("input-location-search");
+      inputLocationSearch.setAttribute("lat-selected", element.getAttribute("lat"));
+      inputLocationSearch.setAttribute("long-selected", element.getAttribute("long"));
 
+      inputLocationSearch.value = element.innerHTML;
+    }
+
+    const clearLocation = () => {
+      $("#location-result-box").empty();
+      var inputLocationSearch = document.getElementById("input-location-search");
+      inputLocationSearch.removeAttribute("lat-selected");
+      inputLocationSearch.removeAttribute("long-selected");
+      marker.remove();
+
+    }
+
+    $("#input-location-search").on("search", () => {
+      clearLocation();
+    })
+    $('#input-location-search').keypress(function (e) {
+      if (e.which == 13) {
+        //Enter is pressed
+
+        tt.services.fuzzySearch({
+          key: apiKey,
+          query: $('#input-location-search').val(),
+          countrySet: 'MY',
+          typeahead: true
+
+        })
+          .go()
+          .then(function (response) {
+            console.log(response)
+            $("#location-result-box").empty();
+
+            if (response.results.length > 0) {
+              response.results.forEach(result => {
+                $("#location-result-box").append(` <div class="location-result" lat='${result.position.lat}' long='${result.position.lng}' onclick='selectLocation(this)' >${result.address.freeformAddress}</div>`)
+              })
+            } else {
+              $("#location-result-box").append("<div class='location-result'> No Result found in TomTom Map API</div>");
+            }
+
+          });
+        return false;
+      } else {
+        clearLocation();
+      }
+    });
+
+    function searchWithCondition() {
+      console.log(upcomingDistributionData)
+      filteredUpcomingDistributionData = upcomingDistributionData.filter((element) => {
+        var isLocationFilterSuccess = false;
+        var isDistributionTypeFilterSuccess = false;
+        if (!$('#input-location-search').attr("lat-selected") || !$('#input-location-search').attr("long-selected") ) {
+          isLocationFilterSuccess= true;
+        } else {
+          if(element.distributionType == "doorstep-distribution"){
+            isLocationFilterSuccess = true;
+          } else {
+            isLocationFilterSuccess = distance(element.locationCoor.latitude, element.locationCoor.longitude, $('#input-location-search').attr("lat-selected"), $('#input-location-search').attr("long-selected"), 'K' ) < $("#input-location-search-tolerance").val();
+          }
+          
+        }
+
+        if($("#input-search-distribution-type").val() === "all") {
+          isDistributionTypeFilterSuccess = true;
+        } else {
+          isDistributionTypeFilterSuccess = element.distributionType === $("#input-search-distribution-type").val()
+        }
+        
+        return isLocationFilterSuccess && isDistributionTypeFilterSuccess;
+      });
+
+      $("#upcoming-table-body").empty();
+
+      filteredUpcomingDistributionData.forEach(function (document) {
+            const doc = document
+            console.log(doc)
+
+            var shouldAllowRegister = ""
+
+            if (!doc.applicants) {
+              shouldAllowRegister = `<div class="col-md-8 d-flex">
+                                          <a class="btn btn-success text-light w-100 mx-2" onclick="registerApplicantModal('${document.id}')">Register Applicant</a>                              
+                                      </div>`
+
+            }
+
+            if (!!doc.applicants && doc.applicants.length < doc.numOfNeedy) {
+              shouldAllowRegister = `<div class="col-md-8 d-flex">
+                                          <a class="btn btn-success text-light w-100 mx-2" onclick="registerApplicantModal('${document.id}')">Register Applicant</a>                              
+                                      </div>`
+            }
+
+            if (!!doc.applicants && doc.applicants.length >= doc.numOfNeedy) {
+              shouldAllowRegister = `<div class="col-md-8 d-flex">
+                                          <span class="btn btn-danger text-light w-100 mx-2" style="pointer-events:none !important">Fully Registered</span>                              
+                                      </div>`
+            }
+
+            $("#upcoming-table-body").append(`
+                                <tr class="text-muted">
+                                    <td scope="row">${doc.eventId}</th>
+                                    <th scope="row">${doc.distributionType}</th>
+                                    <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>${doc.locationName || doc.doorstepDistributionArea}</td>
+                                    <td>${doc.numOfPersonnel}</td>
+                                    <td>${doc.numOfNeedy}</td>
+                                    <td>${doc.applicants ? doc.applicants.length : 0}</td>
+                                    <td>
+                                        <div class="row d-flex justify-content-between mx-2">
+                                            <a class="btn btn-primary text-light col-md-3" onclick="showInfo('${doc.eventId}', 'upcoming')" >Info</a>
+                                            ${shouldAllowRegister
+              }
+                                        </div>
+                                    </td>
+                                </tr>
+                                    `
+            )
+
+
+
+          });
+
+    }
+
+    async function useMyLocationInSearchBar() {
+      $("#location-result-box").empty();
+      var userData = await db.collection("users").doc(firebase.auth().currentUser.uid).get().then((document)=>{return document.data();})
+      var inputLocationSearch = document.getElementById("input-location-search");
+      inputLocationSearch.setAttribute("lat-selected", userData.addressCoor.latitude);
+      inputLocationSearch.setAttribute("long-selected", userData.addressCoor.longitude);
+
+      inputLocationSearch.value = userData.addressName;
+    }
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    //:::                                                                         :::
+    //:::  This routine calculates the distance between two points (given the     :::
+    //:::  latitude/longitude of those points). It is being used to calculate     :::
+    //:::  the distance between two locations using GeoDataSource (TM) prodducts  :::
+    //:::                                                                         :::
+    //:::  Definitions:                                                           :::
+    //:::    South latitudes are negative, east longitudes are positive           :::
+    //:::                                                                         :::
+    //:::  Passed to function:                                                    :::
+    //:::    lat1, lon1 = Latitude and Longitude of point 1 (in decimal degrees)  :::
+    //:::    lat2, lon2 = Latitude and Longitude of point 2 (in decimal degrees)  :::
+    //:::    unit = the unit you desire for results                               :::
+    //:::           where: 'M' is statute miles (default)                         :::
+    //:::                  'K' is kilometers                                      :::
+    //:::                  'N' is nautical miles                                  :::
+    //:::                                                                         :::
+    //:::  Worldwide cities and other features databases with latitude longitude  :::
+    //:::  are available at https://www.geodatasource.com                         :::
+    //:::                                                                         :::
+    //:::  For enquiries, please contact sales@geodatasource.com                  :::
+    //:::                                                                         :::
+    //:::  Official Web site: https://www.geodatasource.com                       :::
+    //:::                                                                         :::
+    //:::               GeoDataSource.com (C) All Rights Reserved 2018            :::
+    //:::                                                                         :::
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    function distance(lat1, lon1, lat2, lon2, unit) {
+      if ((lat1 == lat2) && (lon1 == lon2)) {
+        return 0;
+      }
+      else {
+        var radlat1 = Math.PI * lat1 / 180;
+        var radlat2 = Math.PI * lat2 / 180;
+        var theta = lon1 - lon2;
+        var radtheta = Math.PI * theta / 180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+          dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = dist * 180 / Math.PI;
+        dist = dist * 60 * 1.1515;
+        if (unit == "K") { dist = dist * 1.609344 }
+        if (unit == "N") { dist = dist * 0.8684 }
+        return dist;
+      }
+    }
     fetchAllDistribution();
   </script>
 
