@@ -40,7 +40,7 @@ function showLoginRegisterForm() {
                         </div>
                     </div>
                     <div id="register-form" class="input-form-wrapper">
-                        <h2 class="mb-4">Create Account</h2>
+                        <h2 class="mb-4">Create Account as Event applicant</h2>
                         <div class="md-form">
                             <input type="text" id="register-email-input" class="form-control">
                             <label for="register-email-input" >Your Email</label>
@@ -65,6 +65,27 @@ function showLoginRegisterForm() {
                             <input type="text" id="register-ic-input" class="form-control">
                             <label for="register-ic-input" >IC number</label>
                             <span class="error-label"></span>
+                        </div>
+                        <div class="md-form">
+                            <input type="text" id="register-contact-input" class="form-control">
+                            <label for="register-contact-input" >Contact number</label>
+                            <span class="error-label"></span>
+                        </div>
+                        <div class="centralised-distribute-additional-input">
+                            <div class="position-relative">
+                                
+                                <div class="md-form has-search">
+                                    <input type="search" class="form-control" id="register-address-input">
+                                    <label for="register-address-input" style="margin-left:35px" >Address - Search Location Here(ex: Jalan sunway..)</label>
+                                    <span class="fa fa-search form-control-feedback" style="top:0;left:0;"></span>
+                                    <span class="error-label"></span>
+                                </div>
+                                <span class="error-label"></span>
+                                <div id="location-result-box" style="top:2.5rem">
+                            </div>
+
+                            </div>
+                            <div id="map-location-wrapper" style="width: auto; margin: 1.5rem 3rem;"></div>
                         </div>
                         <div>
                             <div class="d-inline-block position-relative">
@@ -124,10 +145,10 @@ function showLoginRegisterForm() {
                     var userRef = db.collection("users").doc(firebase.auth().currentUser.uid);
                     userRef.get().then(function (doc) {
                         var userData = doc.data()
-                        
-                        if(userData.accType.toLowerCase() == "ngo") {
+
+                        if (userData.accType.toLowerCase() == "ngo") {
                             window.location.href = "storage.html"
-                        } else if(userData.accType.toLowerCase() == "gov") {
+                        } else if (userData.accType.toLowerCase() == "gov") {
                             window.location.href = "government_dashboard.html"
                         }
                     }).catch(function (error) {
@@ -144,13 +165,67 @@ function showLoginRegisterForm() {
                 var $registerNameInput = $("#register-name-input");
                 var $registerPasswordInput = $("#register-password-input");
                 var $registerRePasswordInput = $("#register-con-password-input");
+                var $registerIcInput = $("#register-ic-input");
+                var $registerAddress = $("#register-address-input");
+                var $registerContact = $("#register-contact-input");
+                var isSuccess = true;
 
                 //make loading
                 $("#register-btn").parent().children(".loading-spinner").css("display", "inline-block")
                 $("#register-btn").css("visibility", "hidden")
 
                 //TODO: Make api request to register and return the result
-                return false;
+                await firebase.auth().createUserWithEmailAndPassword($registerEmailInput.val(), $registerPasswordInput.val())
+                    .then((user) => {
+                        // Signed in 
+                        var userInfoObj = {
+                            accType: "APPLICANT",
+                            name: $registerNameInput.val(),
+                            ic: $registerIcInput.val(),
+                            addressName: $registerAddress.val(),
+                            addressCoor: new firebase.firestore.GeoPoint(parseFloat($registerAddress.attr("lat-selected")), parseFloat($registerAddress.attr("long-selected"))),
+                            phone: $registerContact.val()
+                        }
+
+                        db.collection("users").doc(user.user.uid).set(userInfoObj).then(() => {
+                            redirectUserWhenNotAuthorized();
+                            updateLoginStatusInTopNav();
+                        }).catch(error => {
+                            console.log("error")
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Register Failed',
+                                text: "Some Error occured please try again later" + errorMessage,
+                            })
+                        });
+
+                    })
+                    .catch((error) => {
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Register Failed',
+                            text: "Some Error occured please try again later" + errorMessage,
+                        })
+
+                        isSuccess = false;
+                        // ..
+                    });
+
+                if (isSuccess) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: "Register Successfully",
+                        showConfirmButton: false,
+                        timer: 5000
+                    })
+                }
+
+
+                return isSuccess;
             }
         },
         confirmButtonText: 'Cool',
@@ -166,6 +241,17 @@ function showLoginRegisterForm() {
         //TODO: perform any action after register or login is done
 
     })
+    const apiKey = 'pDnGSI4YJIaGwPmkmQNZjLIG02H6rxB2';
+    var marker = new tt.Marker({ color: "red" });
+
+    //TomTom map initialization
+    var map = tt.map({
+        key: apiKey,
+        container: 'map-location-wrapper',
+        center: [101.5923, 3.15],
+        style: 'tomtom://vector/1/basic-main',
+        zoom: 12
+    });
 
     var $loginForm = $("#login-form");
     var $registerForm = $("#register-form");
@@ -173,6 +259,67 @@ function showLoginRegisterForm() {
     var $registerToggle = $("#register-toggle");
     var $btnSelectedIndicator = $("#btn-selected-indicator");
 
+
+    this.selectLocation = (element) => {
+        $("#location-result-box").empty();
+        var inputLocationSearch = document.getElementById("register-address-input");
+        inputLocationSearch.setAttribute("lat-selected", element.getAttribute("lat"));
+        inputLocationSearch.setAttribute("long-selected", element.getAttribute("long"));
+
+        inputLocationSearch.value = element.innerHTML;
+        map.flyTo({ center: new tt.LngLat(element.getAttribute("long"), element.getAttribute("lat")) })
+        marker = new tt.Marker({ color: "red" }).setLngLat([element.getAttribute("long"), element.getAttribute("lat")]).addTo(map);
+        validateForm();
+    }
+
+    this.clearLocation = () => {
+        $("#location-result-box").empty();
+        var inputLocationSearch = document.getElementById("register-address-input");
+        inputLocationSearch.removeAttribute("lat-selected");
+        inputLocationSearch.removeAttribute("long-selected");
+        marker.remove();
+
+    }
+
+    $("#register-address-input").on("search", () => {
+        clearLocation();
+    })
+    $('#register-address-input').keypress(function (e) {
+        if (e.which == 13) {
+            //Enter is pressed
+
+            tt.services.fuzzySearch({
+                key: apiKey,
+                query: $('#register-address-input').val(),
+                countrySet: 'MY',
+                typeahead: true
+
+            })
+                .go()
+                .then(function (response) {
+                    console.log(response)
+                    $("#location-result-box").empty();
+
+                    if (response.results.length > 0) {
+                        response.results.forEach(result => {
+                            $("#location-result-box").append(` <div class="location-result" lat='${result.position.lat}' long='${result.position.lng}' onclick='selectLocation(this)' >${result.address.freeformAddress}</div>`)
+                        })
+                    } else {
+                        $("#location-result-box").append("<div class='location-result'> No Result found in TomTom Map API</div>");
+                    }
+
+                    // map = tt.map({
+                    //   key: API_KEY,
+                    //   container: 'map-div',
+                    //   center: response.results[0].position,
+                    //   zoom: 12
+                    // });
+                });
+            return false;
+        } else {
+            clearLocation();
+        }
+    });
 
     this.validateForm = () => {
         $(".form-container .error-label").text(""); //reset all error
@@ -185,6 +332,8 @@ function showLoginRegisterForm() {
             var $registerPasswordInput = $("#register-password-input");
             var $registerRePasswordInput = $("#register-con-password-input");
             var $registerIcInput = $("#register-ic-input");
+            var $registerAddress = $("#register-address-input");
+            var $registerContact = $("#register-contact-input");
 
             //Email Validate
             if ($registerEmailInput.val().length <= 0) {
@@ -295,6 +444,58 @@ function showLoginRegisterForm() {
                 isValid = false;
             }
 
+            if ($registerContact.val().length <= 0) {
+                var errorLabel = $registerContact.parent().children(".error-label");
+
+                if (errorLabel.html().length > 0) {
+                    errorLabel.html(errorLabel.html() + "<br>")
+                }
+
+                errorLabel.html("Contact Cannot be empty.");
+                isValid = false;
+            }
+
+            var contactRegex = /^[0-9]{3}\-[0-9]{7}$/
+            if (!contactRegex.test($registerContact.val())) {
+                var errorLabel = $registerContact.parent().children(".error-label");
+
+                if (errorLabel.html().length > 0) {
+                    errorLabel.html(errorLabel.html() + "<br>")
+                }
+
+                errorLabel.html(errorLabel.html() + "Contact must be in the format xxx-xxxxxxx");
+
+                isValid = false;
+            }
+
+
+
+
+            if ($registerAddress.val().length <= 0) {
+                var errorLabel = $registerAddress.parent().children(".error-label");
+
+                if (errorLabel.html().length > 0) {
+                    errorLabel.html(errorLabel.html() + "<br>")
+                }
+
+                errorLabel.html("Address Cannot be empty.");
+                isValid = false;
+            }
+
+            //check location
+            if (!$registerAddress.attr("lat-selected") || !$registerAddress.attr("long-selected")) {
+                var errorLabel = $registerAddress.parent().children(".error-label");
+
+                if (errorLabel.html().length > 0) {
+                    errorLabel.html(errorLabel.html() + "<br>")
+                }
+
+                errorLabel.html(errorLabel.html() + "Address Must be selected from TomTom API search list.");
+                isValid = false;
+
+            }
+
+
 
             return isValid;
 
@@ -357,6 +558,7 @@ function showLoginRegisterForm() {
         if (nxtFormName == "register" && currentFormState != "register") {
             $(".form-container .form-control").val(""); //reset all value
             $(".form-container .error-label").text(""); //reset all error
+            clearLocation();
             $loginForm.css("left", "-100%");
             $registerForm.css("left", "0");
             $loginToggle.css("color", "#545454");

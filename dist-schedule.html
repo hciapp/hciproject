@@ -47,28 +47,29 @@
       <!-- Sidebar elements moved to navbar when collapsed -->
       <ul class="nav mt-3 flex-column d-md-none d-lg-none">
         <li class="nav-item">
-          <a class="nav-link text-success" href="./storage.html">
-            <i class="mdi mdi-home menu-icon"></i>
-            <span class="menu-title">Inventory Summary</span>
-          </a>
+          <a class="side-nav-link nav-link collapsed text-truncate text-success" href="#submenu1" data-toggle="collapse"
+            data-target="#submenu1"><i class="fa fa-archive"></i> <span class="d-none d-sm-inline">Inventory</span></a>
+          <div class="collapse show" id="submenu1" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./storage.html"><span>Inventory
+                    Summary</span></a></li>
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./food-log.html"><span>Inventory
+                    Management</span></a></li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-success" href="./food-log.html">
-            <i class="mdi mdi-currency-usd menu-icon"></i>
-            <span class="menu-title">Inventory Management</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-light bg-secondary" href="./dist-schedule.html">
-            <i class="mdi mdi-bell-plus menu-icon"></i>
-            <span class="menu-title">Event Schedule</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-success" href="./mco-check.html">
-            <i class="mdi mdi-settings menu-icon"></i>
-            <span class="menu-title">Event Request</span>
-          </a>
+          <a class="side-nav-link nav-link collapsed text-truncate text-success" href="#submenu2" data-toggle="collapse"
+            data-target="#submenu2"><i class="fa fa-calendar"></i> <span class="d-none d-sm-inline">Events</span></a>
+          <div class="collapse" id="submenu2" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item"><a class="nav-link py-2 text-light bg-secondary"
+                  href="./dist-schedule.html"><span>Event
+                    Schedule</span></a></li>
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./mco-check.html"><span>Event
+                    Request</span></a></li>
+            </ul>
+          </div>
         </li>
       </ul>
 
@@ -80,28 +81,29 @@
     <div class="col-md-2 col-lg-2 d-none d-md-block d-lg-block position-fixed h-100 bg-white" id="sidebar">
       <ul class="nav mt-3 flex-column">
         <li class="nav-item">
-          <a class="nav-link text-success" href="./storage.html">
-            <i class="mdi mdi-home menu-icon"></i>
-            <span class="menu-title">Inventory Summary</span>
-          </a>
+          <a class="side-nav-link nav-link collapsed text-truncate text-success" href="#submenu1" data-toggle="collapse"
+            data-target="#submenu1"><i class="fa fa-archive"></i> <span class="d-none d-sm-inline">Inventory</span></a>
+          <div class="collapse" id="submenu1" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./storage.html"><span>Inventory
+                    Summary</span></a></li>
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./food-log.html"><span>Inventory
+                    Management</span></a></li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-success" href="./food-log.html">
-            <i class="mdi mdi-currency-usd menu-icon"></i>
-            <span class="menu-title">Inventory Management</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-light bg-secondary" href="./dist-schedule.html">
-            <i class="mdi mdi-bell-plus menu-icon"></i>
-            <span class="menu-title">Event Schedule</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-success" href="./mco-check.html">
-            <i class="mdi mdi-settings menu-icon"></i>
-            <span class="menu-title">Event Request</span>
-          </a>
+          <a class="side-nav-link nav-link collapsed text-truncate text-success" href="#submenu2" data-toggle="collapse"
+            data-target="#submenu2"><i class="fa fa-calendar"></i> <span class="d-none d-sm-inline">Events</span></a>
+          <div class="collapse show" id="submenu2" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item"><a class="nav-link py-2 text-light bg-secondary"
+                  href="./dist-schedule.html"><span>Event
+                    Schedule</span></a></li>
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./mco-check.html"><span>Event
+                    Request</span></a></li>
+            </ul>
+          </div>
         </li>
       </ul>
     </div>
@@ -116,13 +118,14 @@
           <table class="table table-bordered table-striped mb-0">
             <thead>
               <tr class="text-muted">
+                <th scope="col" style="width: 10%;">Event Id</th>
                 <th scope="col" style="width: 10%;">Event type</th>
                 <th scope="col" style="width: 10%;">Event Start Date & Time</th>
                 <th scope="col" style="width: 10%;">Event End Date & Time</th>
                 <th scope="col" style="width: 15%;">Location</th>
                 <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
-                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
-                <th scope="col" style="width: 10%;">Current Number of Participants</th>
+                <th scope="col" style="width: 5%;">Maximum Number of Participants</th>
+                <th scope="col" style="width: 5%;">Current Number of Participants</th>
                 <th scope="col" style="width: 30%;">Action</th>
               </tr>
             </thead>
@@ -141,13 +144,14 @@
           <table class="table table-bordered table-striped mb-0">
             <thead>
               <tr class="text-muted">
+                <th scope="col" style="width: 10%;">Event Id</th>
                 <th scope="col" style="width: 10%;">Event type</th>
                 <th scope="col" style="width: 10%;">Event Start Date & Time</th>
                 <th scope="col" style="width: 10%;">Event End Date & Time</th>
                 <th scope="col" style="width: 15%;">Location</th>
                 <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
-                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
-                <th scope="col" style="width: 10%;">Current Number of Participants</th>
+                <th scope="col" style="width: 5%;">Maximum Number of Participants</th>
+                <th scope="col" style="width: 5%;">Current Number of Participants</th>
                 <th scope="col" style="width: 30%;">Action</th>
               </tr>
             </thead>
@@ -166,13 +170,14 @@
           <table class="table table-bordered table-striped mb-0">
             <thead>
               <tr class="text-muted">
+                <th scope="col" style="width: 10%;">Event Id</th>
                 <th scope="col" style="width: 10%;">Event type</th>
                 <th scope="col" style="width: 10%;">Event Start Date & Time</th>
                 <th scope="col" style="width: 10%;">Event End Date & Time</th>
                 <th scope="col" style="width: 15%;">Location</th>
                 <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
-                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
-                <th scope="col" style="width: 10%;">Current Number of Participants</th>
+                <th scope="col" style="width: 5%;">Maximum Number of Participants</th>
+                <th scope="col" style="width: 5%;">Current Number of Participants</th>
                 <th scope="col" style="width: 30%;">Action</th>
               </tr>
             </thead>
@@ -191,13 +196,14 @@
           <table class="table table-bordered table-striped mb-0">
             <thead>
               <tr class="text-muted">
+                <th scope="col" style="width: 10%;">Event Id</th>
                 <th scope="col" style="width: 10%;">Event type</th>
                 <th scope="col" style="width: 10%;">Event Start Date & Time</th>
                 <th scope="col" style="width: 10%;">Event End Date & Time</th>
                 <th scope="col" style="width: 15%;">Location</th>
                 <th scope="col" style="width: 5%;">Number of Personnel (Organizer)</th>
-                <th scope="col" style="width: 10%;">Maximum Number of Participants</th>
-                <th scope="col" style="width: 10%;">Current Number of Participants</th>
+                <th scope="col" style="width: 5%;">Maximum Number of Participants</th>
+                <th scope="col" style="width: 5%;">Current Number of Participants</th>
                 <th scope="col" style="width: 30%;">Action</th>
               </tr>
             </thead>
@@ -409,7 +415,8 @@
 
             $("#today-table-body").append(`
                                 <tr class="text-muted">
-                                    <th scope="row">${doc.distributionType}</th>
+                                    <th scope="row">${doc.eventId}</th>
+                                    <td>${doc.distributionType}</td>
                                     <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${doc.locationName || doc.doorstepDistributionArea}</td>
@@ -442,7 +449,8 @@
 
             $("#ongoing-table-body").append(`
                                 <tr class="text-muted">
-                                    <th scope="row">${doc.distributionType}</th>
+                                    <th scope="row">${doc.eventId}</th>
+                                    <td>${doc.distributionType}</td>
                                     <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${doc.locationName || doc.doorstepDistributionArea}</td>
@@ -497,7 +505,8 @@
 
             $("#upcoming-table-body").append(`
                                 <tr class="text-muted">
-                                    <th scope="row">${doc.distributionType}</th>
+                                    <th scope="row">${doc.eventId}</th>
+                                    <td>${doc.distributionType}</td>
                                     <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${doc.locationName || doc.doorstepDistributionArea}</td>
@@ -531,7 +540,8 @@
 
             $("#done-table-body").append(`
                                 <tr class="text-muted">
-                                    <th scope="row">${doc.distributionType}</th>
+                                    <th scope="row">${doc.eventId}</th>
+                                    <td>${doc.distributionType}</td>
                                     <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${doc.locationName || doc.doorstepDistributionArea}</td>
@@ -577,7 +587,7 @@
       }
 
 
-      $("#modal-request-id").html(currentReqestInfo.id);
+      $("#modal-request-id").html(currentReqestInfo.eventId);
       $("#modal-distribution-type").html(currentReqestInfo.distributionType);
       $("#modal-distribution-start-datetime").html(moment(currentReqestInfo.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
       $("#modal-distribution-end-datetime").html(moment(currentReqestInfo.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
@@ -585,7 +595,6 @@
       $("#modal-num-of-personnel").html(currentReqestInfo.numOfPersonnel);
       $("#modal-maximum-num-of-applicant").html(currentReqestInfo.numOfNeedy);
       $("#modal-remark").html(currentReqestInfo.remark);
-      $("#modal-request-id").html(currentReqestInfo.id);
 
       $("#modal-applicant-table-body").empty();
       if (!!currentReqestInfo.applicants) {

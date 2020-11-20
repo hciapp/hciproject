@@ -46,28 +46,28 @@
       <!-- Sidebar elements moved to navbar when collapsed -->
       <ul class="nav mt-3 flex-column d-md-none d-lg-none">
         <li class="nav-item">
-          <a class="nav-link text-light bg-secondary" href="./storage.html">
-            <i class="mdi mdi-home menu-icon"></i>
-            <span class="menu-title">Inventory Summary</span>
-          </a>
+          <a class="side-nav-link nav-link collapsed text-truncate text-success" href="#submenu1" data-toggle="collapse"
+            data-target="#submenu1"><i class="fa fa-archive"></i> <span class="d-none d-sm-inline">Inventory</span></a>
+          <div class="collapse show" id="submenu1" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item"><a class="nav-link py-2 text-light bg-secondary"
+                  href="./storage.html"><span>Inventory Summary</span></a></li>
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./food-log.html"><span>Inventory
+                    Management</span></a></li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-success" href="./food-log.html">
-            <i class="mdi mdi-currency-usd menu-icon"></i>
-            <span class="menu-title">Inventory Management</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-success" href="./dist-schedule.html">
-            <i class="mdi mdi-bell-plus menu-icon"></i>
-            <span class="menu-title">Event Schedule</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-success" href="./mco-check.html">
-            <i class="mdi mdi-settings menu-icon"></i>
-            <span class="menu-title">Event Request</span>
-          </a>
+          <a class="side-nav-link nav-link collapsed text-truncate text-success" href="#submenu2" data-toggle="collapse"
+            data-target="#submenu2"><i class="fa fa-calendar"></i> <span class="d-none d-sm-inline">Events</span></a>
+          <div class="collapse" id="submenu2" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./dist-schedule.html"><span>Event
+                    Schedule</span></a></li>
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./mco-check.html"><span>Event
+                    Request</span></a></li>
+            </ul>
+          </div>
         </li>
       </ul>
 
@@ -79,28 +79,28 @@
     <div class="col-md-2 col-lg-2 d-none d-md-block d-lg-block position-fixed h-100 bg-white" id="sidebar">
       <ul class="nav mt-3 flex-column">
         <li class="nav-item">
-          <a class="nav-link  text-light bg-secondary" href="./storage.html">
-            <i class="mdi mdi-home menu-icon"></i>
-            <span class="menu-title">Inventory Summary</span>
-          </a>
+          <a class="side-nav-link nav-link collapsed text-truncate text-success" href="#submenu1" data-toggle="collapse"
+            data-target="#submenu1"><i class="fa fa-archive"></i> <span class="d-none d-sm-inline">Inventory</span></a>
+          <div class="collapse show" id="submenu1" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item"><a class="nav-link py-2 text-light bg-secondary"
+                  href="./storage.html"><span>Inventory Summary</span></a></li>
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./food-log.html"><span>Inventory
+                    Management</span></a></li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-success" href="./food-log.html">
-            <i class="mdi mdi-currency-usd menu-icon"></i>
-            <span class="menu-title">Inventory Management</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-success" href="./dist-schedule.html">
-            <i class="mdi mdi-bell-plus menu-icon"></i>
-            <span class="menu-title">Event Schedule</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-success" href="./mco-check.html">
-            <i class="mdi mdi-settings menu-icon"></i>
-            <span class="menu-title">Event Request</span>
-          </a>
+          <a class="side-nav-link nav-link collapsed text-truncate text-success" href="#submenu2" data-toggle="collapse"
+            data-target="#submenu2"><i class="fa fa-calendar"></i> <span class="d-none d-sm-inline">Events</span></a>
+          <div class="collapse" id="submenu2" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./dist-schedule.html"><span>Event
+                    Schedule</span></a></li>
+              <li class="nav-item"><a class="nav-link py-2 text-success" href="./mco-check.html"><span>Event
+                    Request</span></a></li>
+            </ul>
+          </div>
         </li>
       </ul>
     </div>
@@ -108,66 +108,66 @@
     <!-- Main content -->
     <div class="col-md-10 col-lg-10 offset-md-2">
       <div class="pt-3 pl-3 pr-3" id="stockContainer">
-        
+
 
       </div>
       <!-- Start of modal -->
       <div class="modal fade" id="stockSummaryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="height:80%">
-          <div class="modal-header" style="border: 0;">
-            <h5 class="modal-title" id="exampleModalLabel">Consumables List</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
-                <table class="table table-bordered table-striped mb-0">
-                  <thead>
-                    <tr>
-                      <th scope="col" style="width: 15%;">ID</th>
-                      <th scope="col" style="width: 35%;">Brand</th>
-                      <th scope="col" style="width: 20%;">Storage room</th>
-                      <th scope="col" style="width: 12%;">Weight (KG)</th>
-                      <th scope="col" style="width: 18%;">Expiry Date</th>
-                    </tr>
-                  </thead>
-                  <tbody id="modal-stockListContainer">
-                    <tr>
-                      <th scope="row">A00125</th>
-                      <td>Brand A</td>
-                      <td>Storage Room A</td>
-                      <td>4</td>
-                      <td>20/2/2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">A00265</th>
-                      <td>Brand B</td>
-                      <td>Storage Room B</td>
-                      <td>4</td>
-                      <td>20/11/2020</td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-danger">A00086</th>
-                      <td class="text-danger">Brand C</td>
-                      <td class="text-danger">Storage Room A</td>
-                      <td class="text-danger">3</td>
-                      <td class="text-danger">29/10/2020</td>
-                    </tr>
-                  </tbody>
-                </table>
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content" style="height:80%">
+            <div class="modal-header" style="border: 0;">
+              <h5 class="modal-title" id="exampleModalLabel">Consumables List</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="table-wrapper-scroll-y my-custom-scrollbar w-100 px-2">
+                  <table class="table table-bordered table-striped mb-0">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 15%;">ID</th>
+                        <th scope="col" style="width: 35%;">Brand</th>
+                        <th scope="col" style="width: 20%;">Storage room</th>
+                        <th scope="col" style="width: 12%;">Weight (KG)</th>
+                        <th scope="col" style="width: 18%;">Expiry Date</th>
+                      </tr>
+                    </thead>
+                    <tbody id="modal-stockListContainer">
+                      <tr>
+                        <th scope="row">A00125</th>
+                        <td>Brand A</td>
+                        <td>Storage Room A</td>
+                        <td>4</td>
+                        <td>20/2/2020</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">A00265</th>
+                        <td>Brand B</td>
+                        <td>Storage Room B</td>
+                        <td>4</td>
+                        <td>20/11/2020</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" class="text-danger">A00086</th>
+                        <td class="text-danger">Brand C</td>
+                        <td class="text-danger">Storage Room A</td>
+                        <td class="text-danger">3</td>
+                        <td class="text-danger">29/10/2020</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- End of table -->
               </div>
-              <!-- End of table -->
+            </div>
+            <div class="modal-footer" style="border: 0;">
+              <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 150px;">Close</button>
             </div>
           </div>
-          <div class="modal-footer" style="border: 0;">
-            <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 150px;">Close</button>
-          </div>
         </div>
-      </div>
       </div>
       <!-- End of modal -->
     </div>
@@ -208,99 +208,99 @@
     //global variable to store stock list
     var stockList = [];
 
-    function showStockSummaryDetail(stockType){
+    function showStockSummaryDetail(stockType) {
 
       $('#modal-stockListContainer').empty();
-      
-      var stockTypeList = []
-      stockList.forEach(stock=>{
 
-        if(stock.type.toLowerCase() === stockType.toLowerCase()){
+      var stockTypeList = []
+      stockList.forEach(stock => {
+
+        if (stock.type.toLowerCase() === stockType.toLowerCase()) {
           stockTypeList.push(stock);
-          
+
         }
       })
 
-      stockTypeList.sort((a,b)=>{
+      stockTypeList.sort((a, b) => {
         var orderBool = a.expiryDate.toDate > b.expiryDate.toDate;
         return orderBool ? 1 : -1;
       });
 
-      stockTypeList.forEach(stock=>{
+      stockTypeList.forEach(stock => {
         var isPastExpiryDate = stock.expiryDate.toDate() < new Date();
-          $('#modal-stockListContainer').append(`
+        $('#modal-stockListContainer').append(`
               <tr>
-                <th scope="row" ${isPastExpiryDate?'class="text-danger"':""}>${stock.id}</th>
-                <td ${isPastExpiryDate?'class="text-danger"':""}>${stock.brand}</td>
-                <td ${isPastExpiryDate?'class="text-danger"':""}>${stock.storageRoom}</td>
-                <td ${isPastExpiryDate?'class="text-danger"':""}>${stock.numOfStock}</td>
-                <td ${isPastExpiryDate?'class="text-danger"':""}>${stock.expiryDate.toDate().getFullYear()}-${stock.expiryDate.toDate().getMonth()+1}-${stock.expiryDate.toDate().getDate()}</td>
+                <th scope="row" ${isPastExpiryDate ? 'class="text-danger"' : ""}>${stock.id}</th>
+                <td ${isPastExpiryDate ? 'class="text-danger"' : ""}>${stock.brand}</td>
+                <td ${isPastExpiryDate ? 'class="text-danger"' : ""}>${stock.storageRoom}</td>
+                <td ${isPastExpiryDate ? 'class="text-danger"' : ""}>${stock.numOfStock}</td>
+                <td ${isPastExpiryDate ? 'class="text-danger"' : ""}>${stock.expiryDate.toDate().getFullYear()}-${stock.expiryDate.toDate().getMonth() + 1}-${stock.expiryDate.toDate().getDate()}</td>
               </tr>
           `
-          );
+        );
       })
 
       $('#stockSummaryModal').modal('show');
 
-     
+
 
 
     }
 
     function fetchFoodStockFromFirestore() {
       db.collection("stocks")
-          .onSnapshot(function (querySnapshot) {
-              $("#stockContainer").empty();
+        .onSnapshot(function (querySnapshot) {
+          $("#stockContainer").empty();
 
-              if(querySnapshot.size <= 0) {
-                  $("#stockList-table-body").append(`<td class="text-center" colspan="7">No record yet. Please check again later.</td>`)
+          if (querySnapshot.size <= 0) {
+            $("#stockList-table-body").append(`<td class="text-center" colspan="7">No record yet. Please check again later.</td>`)
+          }
+
+          querySnapshot.forEach(function (document) {
+            const doc = document.data();
+
+            const myJsonObj = {
+              id: document.id,
+              ...doc
+            };
+
+            stockList.push(myJsonObj);
+          });
+
+          //calculate the total for each food
+          var summaryList = [];
+
+          stockList.forEach(stock => {
+
+            var isPastExpiryDate = stock.expiryDate.toDate() < new Date();
+
+            var foundExistingSummary = false;
+            summaryList.forEach(summary => {
+              if (summary.type === stock.type) {
+                summary.totalStock += stock.numOfStock;
+                summary.expiryEntry += isPastExpiryDate ? 1 : 0;
+                foundExistingSummary = true;
               }
+            })
 
-              querySnapshot.forEach(function (document) {
-                  const doc = document.data();
-
-                  const myJsonObj = {
-                      id: document.id,
-                      ...doc
-                  };
-
-                  stockList.push(myJsonObj);
-              });
-
-              //calculate the total for each food
-              var summaryList = [];
-
-              stockList.forEach(stock=>{
-
-                var isPastExpiryDate = stock.expiryDate.toDate() < new Date();
-
-                var foundExistingSummary = false;
-                summaryList.forEach(summary=>{
-                  if(summary.type === stock.type){
-                    summary.totalStock += stock.numOfStock;
-                    summary.expiryEntry += isPastExpiryDate?1:0;
-                    foundExistingSummary = true;
-                  }
-                })
-
-                //means the item type summary not exist yet, we add it now
-                if(foundExistingSummary === false){
-                  summaryList.push({
-                    type: stock.type,
-                    totalStock: stock.numOfStock,
-                    expiryEntry: isPastExpiryDate?1:0
-                  })
-                }
+            //means the item type summary not exist yet, we add it now
+            if (foundExistingSummary === false) {
+              summaryList.push({
+                type: stock.type,
+                totalStock: stock.numOfStock,
+                expiryEntry: isPastExpiryDate ? 1 : 0
               })
+            }
+          })
 
-              summaryList.sort((a,b)=>{
-                var orderBool = a.type > b.type;
-                return orderBool ? 1 : -1;
-              });
+          summaryList.sort((a, b) => {
+            var orderBool = a.type > b.type;
+            return orderBool ? 1 : -1;
+          });
 
-              console.log(summaryList);
-              summaryList.forEach(summary=>{
-                $("#stockContainer").append(`
+          console.log(summaryList);
+          summaryList.forEach(summary => {
+            $("#stockContainer").append(`
                     <div class="col-lg-3 pb-3 d-inline-block" onclick="showStockSummaryDetail('${summary.type}')">
                       <div class="card py-2 px-1" >
                         <div class="card-body">
@@ -314,9 +314,9 @@
                       </div>
                     </div>
                   `
-                )
-              })
-          });
+            )
+          })
+        });
     }
 
     $(document).ready(function () {

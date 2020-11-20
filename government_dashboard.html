@@ -252,7 +252,7 @@
 
                         $("#history-table-body").append(`
                                 <tr class="text-muted">
-                                    <th scope="row">${document.id}</th>
+                                    <th scope="row">${doc.eventId}</th>
                                     <td>${doc.distributionType}</td>
                                     <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
@@ -299,7 +299,7 @@
                         })
                         $("#pending-table-body").append(`
                                 <tr class="text-muted">
-                                    <th scope="row">${document.id}</th>
+                                    <th scope="row">${doc.eventId}</th>
                                     <td>${doc.distributionType}</td>
                                     <td>${moment(doc.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
                                     <td>${moment(doc.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}</td>
@@ -333,7 +333,7 @@
         function showInfo(requestIndex) {
             currentReqestInfo = pendingRequests[requestIndex];
 
-            $("#modal-request-id").html(currentReqestInfo.id);
+            $("#modal-request-id").html(currentReqestInfo.eventId);
             $("#modal-distribution-type").html(currentReqestInfo.distributionType);
             $("#modal-distribution-start-datetime").html(moment(currentReqestInfo.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
             $("#modal-distribution-end-datetime").html(moment(currentReqestInfo.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A'));
@@ -341,7 +341,6 @@
             $("#modal-num-of-personnel").html(currentReqestInfo.numOfPersonnel);
             $("#modal-maximum-num-of-applicant").html(currentReqestInfo.numOfNeedy);
             $("#modal-remark").html(currentReqestInfo.remark);
-            $("#modal-request-id").html(currentReqestInfo.id);
 
 
             if (currentReqestInfo.distributionType == "centralised-distribution") {
