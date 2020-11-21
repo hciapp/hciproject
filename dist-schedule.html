@@ -649,7 +649,7 @@
 
     function registerApplicantModal(documentId) {
       Swal.fire({
-        title: 'Register an applicant to this event.',
+        title: 'Register an applicant for this event.',
         showCancelButton: true,
         confirmButtonText: 'Add applicant',
         confirmButtonColor: '#00c851',
@@ -728,8 +728,8 @@
           })
             .then(function () {
               Swal.fire(
-                'The Applicant is successfully added',
-                'The applicant is now registered to the event. please print the ticket as an evidence for the applicant',
+                'The applicant has been successfully registered',
+                'The applicant is now registered to the event. please print the ticket for the applicant',
                 'success'
               ).then((res) => {
                 var tab = window.open('Applicant Ticket', '_blank');
@@ -738,19 +738,19 @@
                     <body>
                       <div class="container text-center">
                         <img src="resources/qrcode-sample.png" width="300" height="300"/>
-                        <h3>This is a computer generated offical ticket that certified that the applicant below:</h3>  
+                        <h3>This is a computer generated ticket that will need to be presented for admittance to the event.</h3>
                         <p>
-                          The applicant info are as below <br>
+                          The participant's information are as below <br>
                           <span class="font-weight-bold">Applicant Name:</span> ${result.value.name}  <br>
                           <span class="font-weight-bold">Applicant ic:</span> ${result.value.ic}  <br>
                           <span class="font-weight-bold">Applicant contact:</span> ${result.value.phone}  <br>
                           <span class="font-weight-bold">Applicant address:</span> ${result.value.address}  <br>
                           <hr/>
-                          The event infomation are as below: <br>
+                          The event information are as below: <br>
                           <span class="font-weight-bold">Event ID:</span> ${mcoRequest.id}  <br>
                           <span class="font-weight-bold">Event Type:</span> ${mcoRequestData.distributionType}  <br>
-                          <span class="font-weight-bold">Event StartDateTime:</span> ${moment(mcoRequestData.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}  <br>
-                          <span class="font-weight-bold">Event End DateTime:</span> ${moment(mcoRequestData.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}  <br>
+                          <span class="font-weight-bold">Event Start Date & Time:</span> ${moment(mcoRequestData.distributionStartDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}  <br>
+                          <span class="font-weight-bold">Event End Date & Time:</span> ${moment(mcoRequestData.distributionEndDateTime.toDate()).format('DD-MM-YYYY hh:mm A')}  <br>
                           <span class="font-weight-bold">Event Location:</span> ${mcoRequestData.locationName || mcoRequestData.doorstepDistributionArea}  <br>
                           <span class="font-weight-bold">Event Distributions Items:</span> ${mcoRequestData.distributionItems}  <br>
                         </p>
