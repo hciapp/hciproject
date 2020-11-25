@@ -129,7 +129,7 @@
                 <th scope="col" style="width: 12%;">Type</th>
                 <th scope="col" style="width: 23%;">Brand</th>
                 <th scope="col" style="width: 15%;">Storage room</th>
-                <th scope="col" style="width: 7%;">KG</th>
+                <th scope="col" style="width: 7%;">Amount (Kg)</th>
                 <th scope="col" style="width: 21%;">Expiry Date</th>
                 <th scope="col" style="width: 10%;">Action</th>
               </tr>
@@ -182,8 +182,8 @@
                 <span class="error-label"></span>
               </div>
               <div class="form-group col-md-12">
-                <label>Number of Stock</label>
-                <input type="number" class="form-control" id="modal-stock" placeholder="Enter number-of-stock">
+                <label>Amount (Kg)</label>
+                <input type="number" class="form-control" id="modal-stock" placeholder="Enter Amount (Kg)">
                 <span class="error-label"></span>
               </div>
               <div class="form-group col-md-6">
@@ -369,7 +369,7 @@
           $("#stockList-table-body").empty();
 
           if (querySnapshot.size <= 0) {
-            $("#stockList-table-body").append(`<td class="text-center" colspan="7">No Stock yet. Please check again later</td>`)
+            $("#stockList-table-body").append(`<td class="text-center" colspan="7">No stock yet. Please check again later</td>`)
           }
 
           querySnapshot.forEach(function (document) {
@@ -541,7 +541,7 @@
 
       } else {
         //Contain error
-        toastr.error('Please correct the form based on the error message.', 'The Form Contain Error', {
+        toastr.error('Please correct the form based on the error message.', 'This Form Contains Error', {
           "closeButton": false,
           "debug": false,
           "newestOnTop": false,
